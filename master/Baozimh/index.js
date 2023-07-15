@@ -462,23 +462,25 @@ __exportStar(require("./compat/DyamicUI"), exports);
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Baozimh = exports.BaozimhInfo = void 0;
 const types_1 = require("@paperback/types");
-const BAOZIMH_URL = 'https://cn.baozimh.com';
+const BAOZIMH_URL = "https://cn.baozimh.com";
 exports.BaozimhInfo = {
-    version: '2.0',
-    name: '包子漫画',
-    icon: 'icon.png',
-    author: 'hanqinilnix',
-    description: 'Extension that pulls 漫画 from 包子漫画',
+    version: "2.0",
+    name: "包子漫画",
+    icon: "icon.png",
+    author: "hanqinilnix",
+    description: "Extension that pulls 漫画 from 包子漫画",
     contentRating: types_1.ContentRating.EVERYONE,
     websiteBaseURL: BAOZIMH_URL,
-    authorWebsite: 'https://github.com/hanqinilnix',
+    authorWebsite: "https://github.com/hanqinilnix",
     sourceTags: [
         {
-            text: 'Cloudflare',
-            type: types_1.BadgeColor.RED
+            text: "Cloudflare",
+            type: types_1.BadgeColor.RED,
         },
     ],
-    intents: types_1.SourceIntents.MANGA_CHAPTERS | types_1.SourceIntents.HOMEPAGE_SECTIONS | types_1.SourceIntents.CLOUDFLARE_BYPASS_REQUIRED
+    intents: types_1.SourceIntents.MANGA_CHAPTERS |
+        types_1.SourceIntents.HOMEPAGE_SECTIONS |
+        types_1.SourceIntents.CLOUDFLARE_BYPASS_REQUIRED,
 };
 class Baozimh {
     constructor(cheerio) {
@@ -491,16 +493,16 @@ class Baozimh {
                     request.headers = {
                         ...(request.headers ?? {}),
                         ...{
-                            'referer': `${BAOZIMH_URL}/`,
-                            'user-agent': await this.requestManager.getDefaultUserAgent()
-                        }
+                            referer: `${BAOZIMH_URL}/`,
+                            "user-agent": await this.requestManager.getDefaultUserAgent(),
+                        },
                     };
                     return request;
                 },
                 interceptResponse: async (response) => {
                     return response;
-                }
-            }
+                },
+            },
         });
     }
     getMangaShareUrl(mangaId) {
@@ -509,52 +511,53 @@ class Baozimh {
     async getHomePageSections(sectionCallback) {
         const request = App.createRequest({
             url: `${BAOZIMH_URL}`,
-            method: 'GET',
+            method: "GET",
         });
         const response = await this.requestManager.schedule(request, 1);
         this.CloudFlareError(response.status);
         if (response.status != 200) {
-            throw new Error('Something went wrong!' + response.status);
+            throw new Error("Something went wrong!" + response.status);
         }
         const $ = this.cheerio.load(response.data);
         const popularSection = App.createHomeSection({
             id: "0",
-            title: '热门漫画',
+            title: "热门漫画",
             containsMoreItems: true,
             type: types_1.HomeSectionType.singleRowNormal,
         });
         sectionCallback(popularSection);
-        popularSection.items = $('.index-rank > div > .comics-card').toArray()
+        popularSection.items = $(".index-rank > div > .comics-card")
+            .toArray()
             .map((manga) => App.createPartialSourceManga({
-            mangaId: $(manga).find('a').attr('href').trim(),
-            title: $(manga).find('a').attr('title').trim(),
-            image: $(manga).find('amp-img').attr('src').trim()
+            mangaId: $(manga).find("a").attr("href").trim(),
+            title: $(manga).find("a").attr("title").trim(),
+            image: $(manga).find("amp-img").attr("src").trim(),
         }));
         sectionCallback(popularSection);
-        const categories = $('.index-recommend-items').toArray();
+        const categories = $(".index-recommend-items").toArray();
         for (let id = 1; id < categories.length; id++) {
             let category = categories[id];
-            let title = $(category).find('.catalog-title').text().trim();
+            let title = $(category).find(".catalog-title").text().trim();
             let section = App.createHomeSection({
                 id: String(id),
                 title: title,
                 containsMoreItems: true,
-                type: types_1.HomeSectionType.singleRowNormal
+                type: types_1.HomeSectionType.singleRowNormal,
             });
             sectionCallback(section);
             section.items = $(category)
-                .find('.comics-card')
+                .find(".comics-card")
                 .toArray()
                 .map((manga) => App.createPartialSourceManga({
-                mangaId: $(manga).find('a').attr('href').trim(),
-                title: $(manga).find('a').attr('title').trim(),
-                image: $(manga).find('amp-img').attr('src').trim()
+                mangaId: $(manga).find("a").attr("href").trim(),
+                title: $(manga).find("a").attr("title").trim(),
+                image: $(manga).find("amp-img").attr("src").trim(),
             }));
             sectionCallback(section);
         }
     }
     async getViewMoreItems(homepageSectionId, metadata) {
-        throw new Error('Method not implemented.');
+        throw new Error("Method not implemented.");
     }
     CloudFlareError(status) {
         if (status == 503 || status == 403) {
@@ -564,26 +567,28 @@ class Baozimh {
     async getCloudflareBypassRequestAsync() {
         return App.createRequest({
             url: BAOZIMH_URL,
-            method: 'GET',
+            method: "GET",
             headers: {
-                'referer': `${BAOZIMH_URL}/`,
-                'user-agent': await this.requestManager.getDefaultUserAgent()
-            }
+                referer: `${BAOZIMH_URL}/`,
+                "user-agent": await this.requestManager.getDefaultUserAgent(),
+            },
         });
     }
     async getMangaDetails(mangaId) {
         const request = App.createRequest({
             url: `${BAOZIMH_URL}/${mangaId}`,
-            method: 'GET'
+            method: "GET",
         });
         const response = await this.requestManager.schedule(request, 1);
         const $ = this.cheerio.load(response.data);
-        const titles = [$('h1.comics-detail__title').text().trim()];
-        const images = $('amp-img').toArray()
-            .map((element) => $(element).attr('src'));
-        const author = $('h2.comics-detail__author').text().trim();
-        const desc = $('p.comics-detail__desc').text().trim();
-        const tags = $('span.tag').toArray()
+        const titles = [$("h1.comics-detail__title").text().trim()];
+        const images = $("amp-img")
+            .toArray()
+            .map((element) => $(element).attr("src"));
+        const author = $("h2.comics-detail__author").text().trim();
+        const desc = $("p.comics-detail__desc").text().trim();
+        const tags = $("span.tag")
+            .toArray()
             .map((element) => $(element).text().trim());
         let status = "Unknown";
         switch (tags[0]) {
@@ -605,65 +610,38 @@ class Baozimh {
                 status: status,
                 titles: titles,
                 covers: [images[1]],
-            })
+            }),
         });
     }
     async getChapters(mangaId) {
-        let request = App.createRequest({
+        const request = App.createRequest({
             url: `${BAOZIMH_URL}/${mangaId}`,
-            method: 'GET'
+            method: "GET",
         });
-        let response = await this.requestManager.schedule(request, 1);
+        const response = await this.requestManager.schedule(request, 1);
         this.CloudFlareError(response.status);
-        let $ = this.cheerio.load(response.data);
+        const $ = this.cheerio.load(response.data);
         const getChapterNumber = (link) => {
-            let chapterNumber = '';
+            let chapterNumber = "";
             let i = link.length - 1;
-            while (link[i] != '=') {
+            while (link[i] != "=") {
                 chapterNumber = link[i] + chapterNumber;
                 i--;
             }
             return +chapterNumber;
         };
-        const sections = $('.l-box > .pure-g').toArray().length;
+        const sections = $(".l-box > .pure-g").toArray().length;
         let chapters;
         if (sections == 1) {
-            chapters = $('.l-box > .pure-g > div > a').toArray(); // for manhua with less than certain number of chapters
+            chapters = $(".l-box > .pure-g > div > a").toArray(); // for manhua with less than certain number of chapters
         }
         else {
-            chapters = $('.l-box > .pure-g[id^=chapter] > div > a').toArray();
+            chapters = $(".l-box > .pure-g[id^=chapter] > div > a").toArray();
         }
         chapters = chapters.map((element) => {
             // [link to chapter, name of chapter]
-            return [$(element).attr('href').trim(), $(element).text().trim()];
+            return [$(element).attr("href").trim(), $(element).text().trim()];
         });
-        // get link for the 'latest' chapter
-        const lastChapterLink = chapters[chapters.length - 1][0];
-        const lastChapterNum = getChapterNumber(lastChapterLink);
-        const newChapterNum = lastChapterNum + 1;
-        const newChapterLink = lastChapterLink.split('=').slice(0, -1);
-        newChapterLink.push(newChapterNum.toString());
-        // check if the new chapter exist
-        request = App.createRequest({
-            url: BAOZIMH_URL + newChapterLink.join('='),
-            method: 'GET',
-        });
-        response = await this.requestManager.schedule(request, 1);
-        if (response.status == 200) {
-            $ = this.cheerio.load(response.data);
-            // check if the chapter is the same as the one that have been requested
-            const actualLink = $($('head > link').toArray().slice(-1)[0]).attr('href');
-            let chapterNumber = '';
-            let i = actualLink.length - 5 - 1;
-            while (actualLink[i] != '_') {
-                chapterNumber = actualLink[i] + chapterNumber;
-                i--;
-            }
-            if (newChapterNum == +chapterNumber) {
-                const newChapterName = $('.title').first().text().trim();
-                chapters.push([newChapterLink.join('='), newChapterName]);
-            }
-        }
         return chapters.map((item) => {
             return App.createChapter({
                 id: item[0],
@@ -676,36 +654,46 @@ class Baozimh {
     async getChapterDetails(mangaId, chapterId) {
         let request = App.createRequest({
             url: `${BAOZIMH_URL}/${chapterId}`,
-            method: 'GET'
+            method: "GET",
         });
         let response = await this.requestManager.schedule(request, 2);
         this.CloudFlareError(response.status);
         let $ = this.cheerio.load(response.data);
         let pageNumber = 1;
-        let hasNextChapter = $('.next_chapter').toArray()
+        let hasNextChapter = $(".next_chapter")
+            .toArray()
             .map((nextChapter) => $(nextChapter).text().trim())
-            .filter((text) => text == '点击进入下一页' || text == '點擊進入下一頁');
+            .filter((text) => text == "点击进入下一页" || text == "點擊進入下一頁");
         while (hasNextChapter.length > 0) {
             // get next page
             request = App.createRequest({
                 url: `${BAOZIMH_URL}/${chapterId}_${pageNumber}`,
-                method: 'GET'
+                method: "GET",
             });
             response = await this.requestManager.schedule(request, 1);
             $ = this.cheerio.load(response.data);
-            hasNextChapter = $('.next_chapter').toArray()
+            hasNextChapter = $(".next_chapter")
+                .toArray()
                 .map((nextChapter) => $(nextChapter).text().trim())
-                .filter((text) => text == '点击进入下一页' || text == '點擊進入下一頁');
+                .filter((text) => text == "点击进入下一页" || text == "點擊進入下一頁");
         }
         // get the total number of pages of the chapter
-        const numOfImages = +$('.comic-text__amp').last().text().trim().split('/')[0];
+        const numOfImages = +$(".comic-text__amp")
+            .last()
+            .text()
+            .trim()
+            .split("/")[0];
         // get the first page url as sample for the rest of the chapter page
-        const samplePageUrl = $('.comic-contain__item').first().attr('src').trim().split('/');
+        const samplePageUrl = $(".comic-contain__item")
+            .first()
+            .attr("src")
+            .trim()
+            .split("/");
         const pages = [];
         for (let i = 1; i <= numOfImages; i++) {
             samplePageUrl.pop();
-            samplePageUrl.push(String(i) + '.jpg?t=' + Math.floor(Math.random() * Math.pow(2, 16)));
-            pages.push(samplePageUrl.join('/'));
+            samplePageUrl.push(String(i) + ".jpg?t=" + Math.floor(Math.random() * Math.pow(2, 16)));
+            pages.push(samplePageUrl.join("/"));
         }
         return App.createChapterDetails({
             id: chapterId,
@@ -716,31 +704,31 @@ class Baozimh {
     async getSearchResults(query, metadata) {
         let request = App.createRequest({
             url: `${BAOZIMH_URL}/search?q=${encodeURIComponent(query.title)}`,
-            method: 'GET'
+            method: "GET",
         });
         let response = await this.requestManager.schedule(request, 1);
         let $ = this.cheerio.load(response.data);
-        const idLinks = $('div.comics-card > a.comics-card__info')
+        const idLinks = $("div.comics-card > a.comics-card__info")
             .toArray()
-            .map((e) => $(e).attr('href').trim());
-        const titles = $('.comics-card__title')
+            .map((e) => $(e).attr("href").trim());
+        const titles = $(".comics-card__title")
             .toArray()
             .map((e) => $(e).text().trim());
-        const imageLinks = $('div.comics-card > a.comics-card__poster > amp-img')
+        const imageLinks = $("div.comics-card > a.comics-card__poster > amp-img")
             .toArray()
-            .map((e) => $(e).attr('src').trim());
+            .map((e) => $(e).attr("src").trim());
         if (idLinks.length == titles.length && titles.length == imageLinks.length) {
             let tiles = [];
             for (let i = 0; i < idLinks.length; i++) {
                 tiles.push(App.createPartialSourceManga({
                     mangaId: idLinks[i],
                     title: titles[i],
-                    image: imageLinks[i]
+                    image: imageLinks[i],
                 }));
             }
             return App.createPagedResults({
                 results: tiles,
-                metadata: metadata
+                metadata: metadata,
             });
         }
         throw new Error("Something wrong has occured while searching!");
