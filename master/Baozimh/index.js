@@ -542,7 +542,7 @@ class Baozimh {
             throw Error(errorMessage);
         }
         else if (sections == 2) {
-            chapters = $(".l-box > .pure-g > div > a").toArray(); // for manhua with less than certain number of chapters
+            chapters = $(".comics-chapters__item").toArray(); // for manhua with less than certain number of chapters
         }
         else {
             chapters = $(".l-box > .pure-g[id^=chapter] > div > a").toArray();
