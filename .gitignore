@@ -3,9 +3,6 @@ bundles
 lib
 tmp
 
-# code editor
-.vscode
-
 # compiled sources
 reference
 coverage
@@ -134,3 +131,5 @@ dist
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
+
+.vscode
