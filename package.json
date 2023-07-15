@@ -3,7 +3,6 @@
   "version": "0.8.0",
   "repositoryName": "Ilnix Extensions (0.8)",
   "description": "Ilnix maintained Paperback extension repositories",
-  "baseURL": "https://github.com/hanqinilnix/ilnix-extensions",
   "main": "index.js",
   "scripts": {
     "bundle": "npx paperback bundle",
