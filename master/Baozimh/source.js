@@ -478,9 +478,7 @@ exports.BaozimhInfo = {
             type: types_1.BadgeColor.RED,
         },
     ],
-    intents: types_1.SourceIntents.MANGA_CHAPTERS |
-        types_1.SourceIntents.HOMEPAGE_SECTIONS |
-        types_1.SourceIntents.CLOUDFLARE_BYPASS_REQUIRED,
+    intents: types_1.SourceIntents.MANGA_CHAPTERS | types_1.SourceIntents.HOMEPAGE_SECTIONS | types_1.SourceIntents.CLOUDFLARE_BYPASS_REQUIRED,
 };
 class Baozimh {
     constructor(cheerio) {
@@ -501,63 +499,9 @@ class Baozimh {
                 },
                 interceptResponse: async (response) => {
                     return response;
-                },
-            },
+                }
+            }
         });
-    }
-    getMangaShareUrl(mangaId) {
-        return `${BAOZIMH_URL}/${mangaId}`;
-    }
-    async getHomePageSections(sectionCallback) {
-        const request = App.createRequest({
-            url: `${BAOZIMH_URL}`,
-            method: "GET",
-        });
-        const response = await this.requestManager.schedule(request, 1);
-        this.CloudFlareError(response.status);
-        if (response.status != 200) {
-            throw new Error("Something went wrong!" + response.status);
-        }
-        const $ = this.cheerio.load(response.data);
-        const popularSection = App.createHomeSection({
-            id: "0",
-            title: "热门漫画",
-            containsMoreItems: true,
-            type: types_1.HomeSectionType.singleRowNormal,
-        });
-        sectionCallback(popularSection);
-        popularSection.items = $(".index-rank > div > .comics-card")
-            .toArray()
-            .map((manga) => App.createPartialSourceManga({
-            mangaId: $(manga).find("a").attr("href").trim(),
-            title: $(manga).find("a").attr("title").trim(),
-            image: $(manga).find("amp-img").attr("src").trim(),
-        }));
-        sectionCallback(popularSection);
-        const categories = $(".index-recommend-items").toArray();
-        for (let id = 1; id < categories.length; id++) {
-            let category = categories[id];
-            let title = $(category).find(".catalog-title").text().trim();
-            let section = App.createHomeSection({
-                id: String(id),
-                title: title,
-                containsMoreItems: true,
-                type: types_1.HomeSectionType.singleRowNormal,
-            });
-            sectionCallback(section);
-            section.items = $(category)
-                .find(".comics-card")
-                .toArray()
-                .map((manga) => App.createPartialSourceManga({
-                mangaId: $(manga).find("a").attr("href").trim(),
-                title: $(manga).find("a").attr("title").trim(),
-                image: $(manga).find("amp-img").attr("src").trim(),
-            }));
-            sectionCallback(section);
-        }
-    }
-    async getViewMoreItems(homepageSectionId, metadata) {
-        throw new Error("Method not implemented.");
     }
     CloudFlareError(status) {
         if (status == 503 || status == 403) {
@@ -572,45 +516,6 @@ class Baozimh {
                 referer: `${BAOZIMH_URL}/`,
                 "user-agent": await this.requestManager.getDefaultUserAgent(),
             },
-        });
-    }
-    async getMangaDetails(mangaId) {
-        const request = App.createRequest({
-            url: `${BAOZIMH_URL}/${mangaId}`,
-            method: "GET",
-        });
-        const response = await this.requestManager.schedule(request, 1);
-        const $ = this.cheerio.load(response.data);
-        const titles = [$("h1.comics-detail__title").text().trim()];
-        const images = $("amp-img")
-            .toArray()
-            .map((element) => $(element).attr("src"));
-        const author = $("h2.comics-detail__author").text().trim();
-        const desc = $("p.comics-detail__desc").text().trim();
-        const tags = $("span.tag")
-            .toArray()
-            .map((element) => $(element).text().trim());
-        let status = "Unknown";
-        switch (tags[0]) {
-            case "连载中":
-                status = "Ongoing";
-                break;
-            case "已完结":
-                status = "Completed";
-                break;
-            default:
-                status = "Unknown";
-        }
-        return App.createSourceManga({
-            id: mangaId,
-            mangaInfo: App.createMangaInfo({
-                image: images[0],
-                author: author,
-                desc: desc,
-                status: status,
-                titles: titles,
-                covers: [images[1]],
-            }),
         });
     }
     async getChapters(mangaId) {
@@ -659,7 +564,7 @@ class Baozimh {
         let response = await this.requestManager.schedule(request, 2);
         this.CloudFlareError(response.status);
         let $ = this.cheerio.load(response.data);
-        let pageNumber = 1;
+        let currentPageNumber = 1;
         let hasNextChapter = $(".next_chapter")
             .toArray()
             .map((nextChapter) => $(nextChapter).text().trim())
@@ -667,10 +572,11 @@ class Baozimh {
         while (hasNextChapter.length > 0) {
             // get next page
             request = App.createRequest({
-                url: `${BAOZIMH_URL}/${chapterId}_${pageNumber}`,
+                url: `${BAOZIMH_URL}/${chapterId}_${currentPageNumber}`,
                 method: "GET",
             });
             response = await this.requestManager.schedule(request, 1);
+            this.CloudFlareError(response.status);
             $ = this.cheerio.load(response.data);
             hasNextChapter = $(".next_chapter")
                 .toArray()
@@ -678,22 +584,14 @@ class Baozimh {
                 .filter((text) => text == "点击进入下一页" || text == "點擊進入下一頁");
         }
         // get the total number of pages of the chapter
-        const numOfImages = +$(".comic-text__amp")
-            .last()
-            .text()
-            .trim()
-            .split("/")[0];
+        const numOfImages = +$(".comic-text__amp").last().text().trim().split("/")[0];
         // get the first page url as sample for the rest of the chapter page
-        const samplePageUrl = $(".comic-contain__item")
-            .first()
-            .attr("src")
-            .trim()
-            .split("/");
+        const samplePageUrl = $(".comic-contain__item").first().attr("src")?.trim().split("/");
         const pages = [];
         for (let i = 1; i <= numOfImages; i++) {
-            samplePageUrl.pop();
-            samplePageUrl.push(String(i) + ".jpg?t=" + Math.floor(Math.random() * Math.pow(2, 16)));
-            pages.push(samplePageUrl.join("/"));
+            samplePageUrl?.pop();
+            samplePageUrl?.push(String(i) + ".jpg?t=" + Math.floor(Math.random() * Math.pow(2, 16)));
+            pages.push(samplePageUrl?.join("/"));
         }
         return App.createChapterDetails({
             id: chapterId,
@@ -701,29 +599,117 @@ class Baozimh {
             pages: pages,
         });
     }
+    async getHomePageSections(sectionCallback) {
+        const request = App.createRequest({
+            url: `${BAOZIMH_URL}`,
+            method: "GET",
+        });
+        const response = await this.requestManager.schedule(request, 1);
+        this.CloudFlareError(response.status);
+        const $ = this.cheerio.load(response.data);
+        const popularSection = App.createHomeSection({
+            id: "0",
+            title: "热门漫画",
+            type: types_1.HomeSectionType.singleRowNormal,
+            containsMoreItems: true,
+        });
+        sectionCallback(popularSection);
+        popularSection.items = $(".index-rank > div > .comics-card")
+            .toArray()
+            .map((manga) => App.createPartialSourceManga({
+            mangaId: $(manga).find("a").attr("href").trim(),
+            title: $(manga).find("a").attr("title").trim(),
+            image: $(manga).find("amp-img").attr("src").trim(),
+        }));
+        sectionCallback(popularSection);
+        const categories = $(".index-recommend-items").toArray();
+        for (let id = 1; id < categories.length; id++) {
+            let category = categories[id];
+            let title = $(category).find(".catalog-title").text().trim();
+            let section = App.createHomeSection({
+                id: String(id),
+                title: title,
+                type: types_1.HomeSectionType.singleRowNormal,
+                containsMoreItems: true,
+            });
+            sectionCallback(section);
+            section.items = $(category)
+                .find(".comics-card")
+                .toArray()
+                .map((manga) => App.createPartialSourceManga({
+                mangaId: $(manga).find("a").attr("href").trim(),
+                title: $(manga).find("a").attr("title").trim(),
+                image: $(manga).find("amp-img").attr("src").trim(),
+            }));
+            sectionCallback(section);
+        }
+    }
+    async getViewMoreItems(homepageSectionId, metadata) {
+        throw new Error("Method not implemented.");
+    }
+    async getMangaDetails(mangaId) {
+        const request = App.createRequest({
+            url: `${BAOZIMH_URL}/${mangaId}`,
+            method: "GET",
+        });
+        const response = await this.requestManager.schedule(request, 1);
+        const $ = this.cheerio.load(response.data);
+        const titles = [$("h1.comics-detail__title").text().trim()];
+        const images = $("amp-img")
+            .toArray()
+            .map((element) => $(element).attr("src"));
+        const author = $("h2.comics-detail__author").text().trim();
+        const desc = $("p.comics-detail__desc").text().trim();
+        const tags = $("span.tag")
+            .toArray()
+            .map((element) => $(element).text().trim());
+        let status = "Unknown";
+        switch (tags[0]) {
+            case "连载中":
+                status = "Ongoing";
+                break;
+            case "已完结":
+                status = "Completed";
+                break;
+            default:
+                status = "Unknown";
+        }
+        return App.createSourceManga({
+            id: mangaId,
+            mangaInfo: App.createMangaInfo({
+                image: images[0],
+                author: author,
+                desc: desc,
+                status: status,
+                titles: titles,
+                covers: [images[1]],
+            })
+        });
+    }
+    getMangaShareUrl(mangaId) {
+        return `${BAOZIMH_URL}/${mangaId}`;
+    }
     async getSearchResults(query, metadata) {
         let request = App.createRequest({
             url: `${BAOZIMH_URL}/search?q=${encodeURIComponent(query.title)}`,
             method: "GET",
         });
         let response = await this.requestManager.schedule(request, 1);
+        this.CloudFlareError(response.status);
         let $ = this.cheerio.load(response.data);
-        const idLinks = $("div.comics-card > a.comics-card__info")
-            .toArray()
-            .map((e) => $(e).attr("href").trim());
-        const titles = $(".comics-card__title")
-            .toArray()
-            .map((e) => $(e).text().trim());
-        const imageLinks = $("div.comics-card > a.comics-card__poster > amp-img")
-            .toArray()
-            .map((e) => $(e).attr("src").trim());
+        const idLinks = $("div.comics-card > a.comics-card__info").toArray()
+            .map((element) => $(element).attr("href")?.trim());
+        const titles = $(".comics-card__title").toArray()
+            .map((element) => $(element).text().trim());
+        const imageLinks = $("div.comics-card > a.comics-card__poster > amp-img").toArray()
+            .map((element) => $(element).attr("src")?.trim());
         if (idLinks.length == titles.length && titles.length == imageLinks.length) {
             let tiles = [];
             for (let i = 0; i < idLinks.length; i++) {
                 tiles.push(App.createPartialSourceManga({
                     mangaId: idLinks[i],
-                    title: titles[i],
                     image: imageLinks[i],
+                    title: titles[i],
                 }));
             }
             return App.createPagedResults({
