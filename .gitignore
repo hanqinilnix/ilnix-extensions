@@ -3,7 +3,10 @@ bundles
 lib
 tmp
 
-#compiled sources
+# code editor
+.vscode
+
+# compiled sources
 reference
 coverage
 docs
