@@ -108,6 +108,10 @@ export class Baozimh implements ChapterProviding, HomePageSectionsProviding, Man
         const sections = $(".l-box > .pure-g").toArray().length;
         let chapters;
         if (sections == 1) {
+            const errorMessage = $('.tips-box-right').text().trim();
+            throw Error(errorMessage);
+        }
+        else if (sections == 2) {
             chapters = $(".l-box > .pure-g > div > a").toArray(); // for manhua with less than certain number of chapters
         } else {
             chapters = $(".l-box > .pure-g[id^=chapter] > div > a").toArray();
