@@ -250,16 +250,15 @@ export class Baozimh implements ChapterProviding, HomePageSectionsProviding, Man
         });
 
         const response = await this.requestManager.schedule(request, 1);
+        this.CloudFlareError(response.status);
         const $ = this.cheerio.load(response.data as string);
 
         const titles = [$("h1.comics-detail__title").text().trim()];
-        const images = $("amp-img")
-            .toArray()
+        const images = $("amp-img").toArray()
             .map((element: CheerioElement): string => $(element).attr("src") as string);
         const author = $("h2.comics-detail__author").text().trim();
         const desc = $("p.comics-detail__desc").text().trim();
-        const tags = $("span.tag")
-            .toArray()
+        const tags = $("span.tag").toArray()
             .map((element: CheerioElement): string => $(element).text().trim());
 
         let status = "Unknown";
