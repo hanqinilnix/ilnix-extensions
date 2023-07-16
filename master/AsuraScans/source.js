@@ -1438,9 +1438,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.AsuraScans = exports.AsuraScansInfo = void 0;
 const types_1 = require("@paperback/types");
 const entities = require("entities");
-const ASURA_URL = "https://www.asurascans.com/";
+const ASURA_URL = "https://asura.gg/";
 exports.AsuraScansInfo = {
-    version: "2.0.1",
+    version: "2.0.2",
     name: "AsuraScans",
     icon: "icon.png",
     author: "hanqinilnix",
