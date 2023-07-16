@@ -24,7 +24,7 @@ import entities = require('entities');
 const ASURA_URL = "https://www.asurascans.com/";
 
 export const AsuraScansInfo: SourceInfo = {
-    version: "2.0.0",
+    version: "2.0.1",
     name: "AsuraScans",
     icon: "icon.png",
     author: "hanqinilnix",
@@ -77,8 +77,8 @@ export class AsuraScans implements ChapterProviding, HomePageSectionsProviding, 
 
         return $('div#chapterlist > ul > li').toArray()
             .map((chapter: CheerioElement): Chapter => App.createChapter({
-                id: $(chapter).find('a').attr('href')?.trim() as string,
-                chapNum: getChapterNumber($(chapter).attr('data-num')?.trim() as string),
+                id: $(chapter).find('a').attr('href')!.trim() as string,
+                chapNum: getChapterNumber($(chapter).attr('data-num')!.trim() as string),
                 name: $(chapter).find('.chapternum').text().trim(),
                 time: new Date($(chapter).find('.chapterdate').text().trim()),
                 langCode: 'en',
@@ -123,9 +123,9 @@ export class AsuraScans implements ChapterProviding, HomePageSectionsProviding, 
         sectionCallback(featuredSection);
         featuredSection.items = $('.slide-item').toArray()
             .map((manga: CheerioElement): PartialSourceManga => App.createPartialSourceManga({
-                mangaId: $(manga).find('a').attr('href')?.trim() as string,
+                mangaId: $(manga).find('a').attr('href')!.trim() as string,
                 title: this.decodeHTMLEntity($(manga).find('.ellipsis').text().trim()),
-                image: $(manga).find('img').attr('src')?.trim() as string
+                image: $(manga).find('img').attr('src')!.trim() as string
             }));
         sectionCallback(featuredSection);
 
@@ -139,9 +139,9 @@ export class AsuraScans implements ChapterProviding, HomePageSectionsProviding, 
         sectionCallback(popularTodaySection);
         popularTodaySection.items = $('.bixbox > div > div.bs').toArray()
             .map((manga: CheerioElement): PartialSourceManga => App.createPartialSourceManga({
-                mangaId: $(manga).find('a').attr('href')?.trim() as string,
-                title: this.decodeHTMLEntity($(manga).find('a').attr('title')?.trim() as string),
-                image: $(manga).find('img').attr('src')?.trim() as string
+                mangaId: $(manga).find('a').attr('href')!.trim() as string,
+                title: this.decodeHTMLEntity($(manga).find('a').attr('title')!.trim() as string),
+                image: $(manga).find('img').attr('src')!.trim() as string
             }));
         sectionCallback(popularTodaySection);
 
@@ -155,9 +155,9 @@ export class AsuraScans implements ChapterProviding, HomePageSectionsProviding, 
         sectionCallback(popWeeklySection);
         popWeeklySection.items = $('.wpop-weekly > ul > li').toArray()
             .map((manga: CheerioElement): PartialSourceManga => App.createPartialSourceManga({
-                mangaId: $(manga).find('a').attr('href')?.trim() as string,
+                mangaId: $(manga).find('a').attr('href')!.trim() as string,
                 title: this.decodeHTMLEntity($(manga).find('h2').text().trim()),
-                image: $(manga).find('img').attr('src')?.trim() as string
+                image: $(manga).find('img').attr('src')!.trim() as string
             }));
         sectionCallback(popWeeklySection);
 
@@ -171,9 +171,9 @@ export class AsuraScans implements ChapterProviding, HomePageSectionsProviding, 
         sectionCallback(popMonthlySection);
         popMonthlySection.items = $('.wpop-monthly > ul > li').toArray()
             .map((manga: CheerioElement): PartialSourceManga => App.createPartialSourceManga({
-                mangaId: $(manga).find('a').attr('href')?.trim() as string,
+                mangaId: $(manga).find('a').attr('href')!.trim() as string,
                 title: this.decodeHTMLEntity($(manga).find('h2').text().trim()),
-                image: $(manga).find('img').attr('src')?.trim() as string
+                image: $(manga).find('img').attr('src')!.trim() as string
             }));
         sectionCallback(popMonthlySection);
 
@@ -187,9 +187,9 @@ export class AsuraScans implements ChapterProviding, HomePageSectionsProviding, 
         sectionCallback(popAllTimeSection);
         popAllTimeSection.items = $('.wpop-alltime > ul > li').toArray()
             .map((manga: CheerioElement): PartialSourceManga => App.createPartialSourceManga({
-                mangaId: $(manga).find('a').attr('href')?.trim() as string,
+                mangaId: $(manga).find('a').attr('href')!.trim() as string,
                 title: this.decodeHTMLEntity($(manga).find('h2').text().trim()),
-                image: $(manga).find('img').attr('src')?.trim() as string,
+                image: $(manga).find('img').attr('src')!.trim() as string,
             }));
         sectionCallback(popAllTimeSection);
 
@@ -203,9 +203,9 @@ export class AsuraScans implements ChapterProviding, HomePageSectionsProviding, 
         sectionCallback(lastestUpdateSection);
         lastestUpdateSection.items = $('.bixbox > div > div.utao').toArray()
             .map((manga: CheerioElement): PartialSourceManga => App.createPartialSourceManga({
-                mangaId: $(manga).find('a').attr('href')?.trim() as string,
-                title: this.decodeHTMLEntity($(manga).find('a').attr('title')?.trim() as string),
-                image: $(manga).find('img').attr('src')?.trim() as string,
+                mangaId: $(manga).find('a').attr('href')!.trim() as string,
+                title: this.decodeHTMLEntity($(manga).find('a').attr('title')!.trim() as string),
+                image: $(manga).find('img').attr('src')!.trim() as string,
             }));
         sectionCallback(lastestUpdateSection);
     }
@@ -228,7 +228,7 @@ export class AsuraScans implements ChapterProviding, HomePageSectionsProviding, 
 
         const status = $('.imptdt > i').text();
 
-        const image = $('.thumb > img').attr('src')?.trim() as string;
+        const image = $('.thumb > img').attr('src')!.trim() as string;
 
         const rating = $('.num').text().trim();
 
@@ -269,9 +269,9 @@ export class AsuraScans implements ChapterProviding, HomePageSectionsProviding, 
 
         const pageResults = $('.bs').toArray()
             .map((result: CheerioElement): PartialSourceManga => App.createPartialSourceManga({
-                mangaId: $(result).find('a').attr('href')?.trim() as string,
-                title: $(result).find('a').attr('title')?.trim() as string,
-                image: $(result).find('img').attr('src')?.trim() as string,
+                mangaId: $(result).find('a').attr('href')!.trim() as string,
+                title: $(result).find('a').attr('title')!.trim() as string,
+                image: $(result).find('img').attr('src')!.trim() as string,
             }));
 
         return App.createPagedResults({
