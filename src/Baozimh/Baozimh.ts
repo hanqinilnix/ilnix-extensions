@@ -27,7 +27,7 @@ export const BaozimhInfo: SourceInfo = {
     name: "包子漫画",
     icon: "icon.png",
     author: "hanqinilnix",
-    description: "Extension that pulls 漫画 from 包子漫画",
+    description: "Paperback Extension for 包子漫画",
     contentRating: ContentRating.EVERYONE,
     websiteBaseURL: BAOZIMH_URL,
     authorWebsite: "https://github.com/hanqinilnix",
