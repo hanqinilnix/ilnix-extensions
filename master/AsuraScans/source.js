@@ -1589,7 +1589,7 @@ class AsuraScans {
             .map((manga) => App.createPartialSourceManga({
             mangaId: $(manga).find('a').attr('href').trim(),
             title: this.decodeHTMLEntity($(manga).find('h2').text().trim()),
-            image: $(manga).find('img').attr('src').trim(),
+            image: $(manga).find('img').attr('src').trim()
         }));
         sectionCallback(popAllTimeSection);
         // Latest Update
@@ -1604,7 +1604,7 @@ class AsuraScans {
             .map((manga) => App.createPartialSourceManga({
             mangaId: $(manga).find('a').attr('href').trim(),
             title: this.decodeHTMLEntity($(manga).find('a').attr('title').trim()),
-            image: $(manga).find('img').attr('src').trim(),
+            image: $(manga).find('img').attr('src').trim()
         }));
         sectionCallback(lastestUpdateSection);
     }
@@ -1656,7 +1656,7 @@ class AsuraScans {
             .map((result) => App.createPartialSourceManga({
             mangaId: $(result).find('a').attr('href').trim(),
             title: $(result).find('a').attr('title').trim(),
-            image: $(result).find('img').attr('src').trim(),
+            image: $(result).find('img').attr('src').trim()
         }));
         return App.createPagedResults({
             results: pageResults,
