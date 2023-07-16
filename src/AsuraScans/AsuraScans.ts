@@ -24,7 +24,7 @@ import entities = require('entities');
 const ASURA_URL = "https://www.asurascans.com/";
 
 export const AsuraScansInfo: SourceInfo = {
-    version: "2.0.1",
+    version: "2.0.2",
     name: "AsuraScans",
     icon: "icon.png",
     author: "hanqinilnix",
