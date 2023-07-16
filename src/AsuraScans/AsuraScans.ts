@@ -1,5 +1,4 @@
 import {
-    BadgeColor,
     Chapter,
     ChapterDetails,
     ChapterProviding,
