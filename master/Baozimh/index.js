@@ -468,7 +468,7 @@ exports.BaozimhInfo = {
     name: "包子漫画",
     icon: "icon.png",
     author: "hanqinilnix",
-    description: "Extension that pulls 漫画 from 包子漫画",
+    description: "Paperback Extension for 包子漫画",
     contentRating: types_1.ContentRating.EVERYONE,
     websiteBaseURL: BAOZIMH_URL,
     authorWebsite: "https://github.com/hanqinilnix",
@@ -569,8 +569,7 @@ class Baozimh {
         this.CloudFlareError(response.status);
         let $ = this.cheerio.load(response.data);
         let currentPageNumber = 1;
-        let hasNextChapter = $(".next_chapter")
-            .toArray()
+        let hasNextChapter = $(".next_chapter").toArray()
             .map((nextChapter) => $(nextChapter).text().trim())
             .filter((text) => text == "点击进入下一页" || text == "點擊進入下一頁");
         while (hasNextChapter.length > 0) {
