@@ -1497,7 +1497,7 @@ class AsuraScans {
     }
     async getChapterDetails(mangaId, chapterId) {
         const request = App.createRequest({
-            url: `${mangaId}`,
+            url: `${chapterId}`,
             method: "GET",
         });
         const response = await this.requestManager.schedule(request, 2);
