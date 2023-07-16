@@ -1503,7 +1503,7 @@ class AsuraScans {
         const response = await this.requestManager.schedule(request, 2);
         const $ = this.cheerio.load(response.data);
         const images = $('img').toArray()
-            .map((img) => $(img).attr('src'))
+            .map((img) => $(img).attr('data-cfsrc'))
             .slice(1, -8);
         return App.createChapterDetails({
             id: chapterId,
@@ -1621,7 +1621,7 @@ class AsuraScans {
         const titles = [];
         titles.push(this.decodeHTMLEntity($('.entry-title').text()));
         const status = $('.imptdt > i').text();
-        const image = $('.thumb > img').attr('src').trim();
+        const image = $('.thumb > img').attr('data-cfsrc').trim();
         const rating = $('.num').text().trim();
         const details = $('.fmed > span').toArray()
             .map((detail) => $(detail).text().trim());
@@ -1656,7 +1656,7 @@ class AsuraScans {
             .map((result) => App.createPartialSourceManga({
             mangaId: $(result).find('a').attr('href').trim(),
             title: $(result).find('a').attr('title').trim(),
-            image: $(result).find('img').attr('src').trim()
+            image: $(result).find('img').attr('data-cfsrc').trim()
         }));
         return App.createPagedResults({
             results: pageResults,
