@@ -152,7 +152,7 @@ export class Baozimh implements ChapterProviding, HomePageSectionsProviding, Man
         while (hasNextChapter.length > 0) {
             // get next page
             request = App.createRequest({
-                url: `${BAOZIMH_URL}/${chapterId}_${currentPageNumber}`,
+                url: `${BAOZIMH_URL}/${chapterId}_${++currentPageNumber}`,
                 method: "GET",
             });
 
@@ -160,10 +160,8 @@ export class Baozimh implements ChapterProviding, HomePageSectionsProviding, Man
             this.CloudFlareError(response.status);
             $ = this.cheerio.load(response.data as string);
 
-            hasNextChapter = $(".next_chapter")
-                .toArray()
-                .map((nextChapter: CheerioElement): string =>
-                    $(nextChapter).text().trim())
+            hasNextChapter = $(".next_chapter").toArray()
+                .map((nextChapter: CheerioElement): string => $(nextChapter).text().trim())
                 .filter((text: string): boolean => text == "点击进入下一页" || text == "點擊進入下一頁");
         }
 
