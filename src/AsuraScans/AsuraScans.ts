@@ -125,7 +125,7 @@ export class AsuraScans implements ChapterProviding, HomePageSectionsProviding, 
             .map((manga: CheerioElement): PartialSourceManga => App.createPartialSourceManga({
                 mangaId: $(manga).find('a').attr('href')!.trim(),
                 title: this.decodeHTMLEntity($(manga).find('.ellipsis').text().trim()),
-                image: $(manga).find('img').attr('src')!.trim()
+                image: $(manga).find('img').attr('data-cfsrc')!.trim()
             }));
         sectionCallback(featuredSection);
 
@@ -141,7 +141,7 @@ export class AsuraScans implements ChapterProviding, HomePageSectionsProviding, 
             .map((manga: CheerioElement): PartialSourceManga => App.createPartialSourceManga({
                 mangaId: $(manga).find('a').attr('href')!.trim(),
                 title: this.decodeHTMLEntity($(manga).find('a').attr('title')!.trim()),
-                image: $(manga).find('img').attr('src')!.trim()
+                image: $(manga).find('img').attr('data-cfsrc')!.trim()
             }));
         sectionCallback(popularTodaySection);
 
@@ -157,7 +157,7 @@ export class AsuraScans implements ChapterProviding, HomePageSectionsProviding, 
             .map((manga: CheerioElement): PartialSourceManga => App.createPartialSourceManga({
                 mangaId: $(manga).find('a').attr('href')!.trim(),
                 title: this.decodeHTMLEntity($(manga).find('h2').text().trim()),
-                image: $(manga).find('img').attr('src')!.trim()
+                image: $(manga).find('img').attr('data-cfsrc')!.trim()
             }));
         sectionCallback(popWeeklySection);
 
@@ -173,7 +173,7 @@ export class AsuraScans implements ChapterProviding, HomePageSectionsProviding, 
             .map((manga: CheerioElement): PartialSourceManga => App.createPartialSourceManga({
                 mangaId: $(manga).find('a').attr('href')!.trim(),
                 title: this.decodeHTMLEntity($(manga).find('h2').text().trim()),
-                image: $(manga).find('img').attr('src')!.trim()
+                image: $(manga).find('img').attr('data-cfsrc')!.trim()
             }));
         sectionCallback(popMonthlySection);
 
@@ -189,7 +189,7 @@ export class AsuraScans implements ChapterProviding, HomePageSectionsProviding, 
             .map((manga: CheerioElement): PartialSourceManga => App.createPartialSourceManga({
                 mangaId: $(manga).find('a').attr('href')!.trim(),
                 title: this.decodeHTMLEntity($(manga).find('h2').text().trim()),
-                image: $(manga).find('img').attr('src')!.trim()
+                image: $(manga).find('img').attr('data-cfsrc')!.trim()
             }));
         sectionCallback(popAllTimeSection);
 
@@ -205,7 +205,7 @@ export class AsuraScans implements ChapterProviding, HomePageSectionsProviding, 
             .map((manga: CheerioElement): PartialSourceManga => App.createPartialSourceManga({
                 mangaId: $(manga).find('a').attr('href')!.trim(),
                 title: this.decodeHTMLEntity($(manga).find('a').attr('title')!.trim()),
-                image: $(manga).find('img').attr('src')!.trim()
+                image: $(manga).find('img').attr('data-cfsrc')!.trim()
             }));
         sectionCallback(lastestUpdateSection);
     }
