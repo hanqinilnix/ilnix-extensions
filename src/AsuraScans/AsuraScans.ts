@@ -95,7 +95,7 @@ export class AsuraScans implements ChapterProviding, HomePageSectionsProviding, 
         const $ = this.cheerio.load(response.data as string);
 
         const images = $('img').toArray()
-            .map((img: CheerioElement): string => $(img).attr('src')!)
+            .map((img: CheerioElement): string => $(img).attr('data-cfsrc')!)
             .slice(1, -8);
 
         return App.createChapterDetails({
@@ -228,7 +228,7 @@ export class AsuraScans implements ChapterProviding, HomePageSectionsProviding, 
 
         const status = $('.imptdt > i').text();
 
-        const image = $('.thumb > img').attr('src')!.trim();
+        const image = $('.thumb > img').attr('data-cfsrc')!.trim();
 
         const rating = $('.num').text().trim();
 
@@ -271,7 +271,7 @@ export class AsuraScans implements ChapterProviding, HomePageSectionsProviding, 
             .map((result: CheerioElement): PartialSourceManga => App.createPartialSourceManga({
                 mangaId: $(result).find('a').attr('href')!.trim(),
                 title: $(result).find('a').attr('title')!.trim(),
-                image: $(result).find('img').attr('src')!.trim()
+                image: $(result).find('img').attr('data-cfsrc')!.trim()
             }));
 
         return App.createPagedResults({
