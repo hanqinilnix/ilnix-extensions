@@ -464,7 +464,7 @@ exports.Baozimh = exports.BaozimhInfo = void 0;
 const types_1 = require("@paperback/types");
 const BAOZIMH_URL = "https://cn.baozimh.com";
 exports.BaozimhInfo = {
-    version: "2.0",
+    version: "2.0.3",
     name: "包子漫画",
     icon: "icon.png",
     author: "hanqinilnix",
