@@ -143,10 +143,8 @@ export class Baozimh implements ChapterProviding, HomePageSectionsProviding, Man
         let $ = this.cheerio.load(response.data as string);
 
         let currentPageNumber = 1;
-        let hasNextChapter = $(".next_chapter")
-            .toArray()
-            .map((nextChapter: CheerioElement): string =>
-                $(nextChapter).text().trim())
+        let hasNextChapter = $(".next_chapter").toArray()
+            .map((nextChapter: CheerioElement): string => $(nextChapter).text().trim())
             .filter((text: string): boolean => text == "点击进入下一页" || text == "點擊進入下一頁");
 
         while (hasNextChapter.length > 0) {
