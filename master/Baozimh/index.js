@@ -576,14 +576,13 @@ class Baozimh {
         while (hasNextChapter.length > 0) {
             // get next page
             request = App.createRequest({
-                url: `${BAOZIMH_URL}/${chapterId}_${currentPageNumber}`,
+                url: `${BAOZIMH_URL}/${chapterId}_${++currentPageNumber}`,
                 method: "GET",
             });
             response = await this.requestManager.schedule(request, 1);
             this.CloudFlareError(response.status);
             $ = this.cheerio.load(response.data);
-            hasNextChapter = $(".next_chapter")
-                .toArray()
+            hasNextChapter = $(".next_chapter").toArray()
                 .map((nextChapter) => $(nextChapter).text().trim())
                 .filter((text) => text == "点击进入下一页" || text == "點擊進入下一頁");
         }
@@ -657,15 +656,14 @@ class Baozimh {
             method: "GET",
         });
         const response = await this.requestManager.schedule(request, 1);
+        this.CloudFlareError(response.status);
         const $ = this.cheerio.load(response.data);
         const titles = [$("h1.comics-detail__title").text().trim()];
-        const images = $("amp-img")
-            .toArray()
+        const images = $("amp-img").toArray()
             .map((element) => $(element).attr("src"));
         const author = $("h2.comics-detail__author").text().trim();
         const desc = $("p.comics-detail__desc").text().trim();
-        const tags = $("span.tag")
-            .toArray()
+        const tags = $("span.tag").toArray()
             .map((element) => $(element).text().trim());
         let status = "Unknown";
         switch (tags[0]) {
