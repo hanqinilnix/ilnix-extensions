@@ -87,7 +87,7 @@ export class AsuraScans implements ChapterProviding, HomePageSectionsProviding, 
 
     async getChapterDetails(mangaId: string, chapterId: string): Promise<ChapterDetails> {
         const request = App.createRequest({
-            url: `${mangaId}`,
+            url: `${chapterId}`,
             method: "GET",
         });
 
