@@ -462,7 +462,7 @@ __exportStar(require("./compat/DyamicUI"), exports);
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Happymh = exports.HappymhInfo = void 0;
 const types_1 = require("@paperback/types");
-const HAPPYMH_URL = "https://cn.baozimh.com";
+const HAPPYMH_URL = "https://m.happymh.com";
 exports.HappymhInfo = {
     version: "0.0.1",
     name: "嗨皮漫画",
