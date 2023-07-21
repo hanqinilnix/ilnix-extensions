@@ -20,7 +20,7 @@ import {
     SourceManga,
 } from "@paperback/types";
 
-const HAPPYMH_URL = "https://cn.baozimh.com";
+const HAPPYMH_URL = "https://m.happymh.com";
 
 export const HappymhInfo: SourceInfo = {
     version: "0.0.1",
