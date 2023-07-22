@@ -116,6 +116,7 @@ export class Happymh implements ChapterProviding, HomePageSectionsProviding, Man
                 mangaId: $(manga).find('a').attr('href') as string,
                 image: $(manga).find('mip-img').attr('src') as string,
                 title: $(manga).find('.manga-title').text(),
+                subtitle: $(manga).find('.manga-chapter').text(),
             })
         );
         sectionCallback(dailySection);
@@ -135,6 +136,7 @@ export class Happymh implements ChapterProviding, HomePageSectionsProviding, Man
                 mangaId: $(manga).find('a').attr('href') as string,
                 image: $(manga).find('mip-img').attr('src') as string,
                 title: $(manga).find('.manga-title').text(),
+                subtitle: $(manga).find('.manga-chapter').text(),
             })
         );
         sectionCallback(hotSection);
@@ -154,6 +156,7 @@ export class Happymh implements ChapterProviding, HomePageSectionsProviding, Man
                 mangaId: $(manga).find('a').attr('href') as string,
                 image: $(manga).find('mip-img').attr('src') as string,
                 title: $(manga).find('.manga-title').text(),
+                subtitle: $(manga).find('.manga-chapter').text(),
             })
         );
         sectionCallback(shaonianSection);
@@ -173,6 +176,7 @@ export class Happymh implements ChapterProviding, HomePageSectionsProviding, Man
                 mangaId: $(manga).find('a').attr('href') as string,
                 image: $(manga).find('mip-img').attr('src') as string,
                 title: $(manga).find('.manga-title').text(),
+                subtitle: $(manga).find('.manga-chapter').text(),
             })
         );
         sectionCallback(shaonvSection);
@@ -192,6 +196,7 @@ export class Happymh implements ChapterProviding, HomePageSectionsProviding, Man
                 mangaId: $(manga).find('a').attr('href') as string,
                 image: $(manga).find('mip-img').attr('src') as string,
                 title: $(manga).find('.manga-title').text(),
+                subtitle: $(manga).find('.manga-chapter').text(),
             })
         );
         sectionCallback(blSection);
@@ -211,6 +216,7 @@ export class Happymh implements ChapterProviding, HomePageSectionsProviding, Man
                 mangaId: $(manga).find('a').attr('href') as string,
                 image: $(manga).find('mip-img').attr('src') as string,
                 title: $(manga).find('.manga-title').text(),
+                subtitle: $(manga).find('.manga-chapter').text(),
             })
         );
         sectionCallback(hotUpdateSection);
