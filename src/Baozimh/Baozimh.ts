@@ -24,7 +24,7 @@ import {
 const BAOZIMH_URL = "https://cn.czmanga.com";
 
 export const BaozimhInfo: SourceInfo = {
-    version: "2.0.4",
+    version: "2.0.5",
     name: "包子漫画",
     icon: "icon.png",
     author: "hanqinilnix",
