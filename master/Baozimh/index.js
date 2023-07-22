@@ -465,7 +465,7 @@ const types_1 = require("@paperback/types");
 // const BAOZIMH_URL = "https://cn.baozimh.com";
 const BAOZIMH_URL = "https://cn.czmanga.com";
 exports.BaozimhInfo = {
-    version: "2.0.4",
+    version: "2.0.5",
     name: "包子漫画",
     icon: "icon.png",
     author: "hanqinilnix",
@@ -473,13 +473,7 @@ exports.BaozimhInfo = {
     contentRating: types_1.ContentRating.EVERYONE,
     websiteBaseURL: BAOZIMH_URL,
     authorWebsite: "https://github.com/hanqinilnix",
-    sourceTags: [
-        {
-            text: "Cloudflare",
-            type: types_1.BadgeColor.RED,
-        },
-    ],
-    intents: types_1.SourceIntents.MANGA_CHAPTERS | types_1.SourceIntents.HOMEPAGE_SECTIONS | types_1.SourceIntents.CLOUDFLARE_BYPASS_REQUIRED,
+    intents: types_1.SourceIntents.MANGA_CHAPTERS | types_1.SourceIntents.HOMEPAGE_SECTIONS,
 };
 class Baozimh {
     constructor(cheerio) {
