@@ -546,7 +546,7 @@ class Happymh {
                 subtitle: '更新至：第26话 找个猪头当男友',
             })];
         sectionCallback(testSection);
-        const dailySectionItems = $('.manga-area').eq(0).toArray();
+        const dailySectionItems = $('div.manga-area').eq(0).toArray();
         const dailyTitle = $(dailySectionItems).find('h3').text();
         const dailySection = App.createHomeSection({
             id: "1",
