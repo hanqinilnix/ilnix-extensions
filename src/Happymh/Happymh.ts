@@ -118,7 +118,7 @@ export class Happymh implements ChapterProviding, HomePageSectionsProviding, Man
         )]
         sectionCallback(testSection);
 
-        const dailySectionItems = $('.manga-area').eq(0).toArray();
+        const dailySectionItems = $('div.manga-area').eq(0).toArray();
         const dailyTitle = $(dailySectionItems).find('h3').text();
         const dailySection = App.createHomeSection({
             id: "1",
