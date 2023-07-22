@@ -20,10 +20,11 @@ import {
     SourceManga,
 } from "@paperback/types";
 
-const BAOZIMH_URL = "https://cn.baozimh.com";
+// const BAOZIMH_URL = "https://cn.baozimh.com";
+const BAOZIMH_URL = "https://cn.czmanga.com";
 
 export const BaozimhInfo: SourceInfo = {
-    version: "2.0.3",
+    version: "2.0.4",
     name: "包子漫画",
     icon: "icon.png",
     author: "hanqinilnix",
@@ -63,26 +64,6 @@ export class Baozimh implements ChapterProviding, HomePageSectionsProviding, Man
         }
     });
 
-
-    CloudFlareError(status: number): void {
-        if (status == 503 || status == 403) {
-            throw new Error(
-                `CLOUDFLARE BYPASS ERROR:\nPlease go to the homepage of <${Baozimh.name}> and press the cloud icon.`
-            );
-        }
-    }
-
-    async getCloudflareBypassRequestAsync(): Promise<Request> {
-        return App.createRequest({
-            url: BAOZIMH_URL,
-            method: "GET",
-            headers: {
-                referer: `${BAOZIMH_URL}/`,
-                "user-agent": await this.requestManager.getDefaultUserAgent(),
-            },
-        });
-    }
-
     async getChapters(mangaId: string): Promise<Chapter[]> {
         const request = App.createRequest({
             url: `${BAOZIMH_URL}/${mangaId}`,
@@ -90,7 +71,6 @@ export class Baozimh implements ChapterProviding, HomePageSectionsProviding, Man
         });
 
         const response = await this.requestManager.schedule(request, 1);
-        this.CloudFlareError(response.status);
         const $ = this.cheerio.load(response.data as string);
 
         const getChapterNumber = (link: string): number => {
@@ -139,7 +119,6 @@ export class Baozimh implements ChapterProviding, HomePageSectionsProviding, Man
         });
 
         let response = await this.requestManager.schedule(request, 2);
-        this.CloudFlareError(response.status);
         let $ = this.cheerio.load(response.data as string);
 
         let currentPageNumber = 1;
@@ -155,7 +134,6 @@ export class Baozimh implements ChapterProviding, HomePageSectionsProviding, Man
             });
 
             response = await this.requestManager.schedule(request, 1);
-            this.CloudFlareError(response.status);
             $ = this.cheerio.load(response.data as string);
 
             hasNextChapter = $(".next_chapter").toArray()
@@ -191,7 +169,6 @@ export class Baozimh implements ChapterProviding, HomePageSectionsProviding, Man
         });
 
         const response = await this.requestManager.schedule(request, 1);
-        this.CloudFlareError(response.status);
         const $ = this.cheerio.load(response.data as string);
 
         const popularSection = App.createHomeSection({
@@ -246,7 +223,6 @@ export class Baozimh implements ChapterProviding, HomePageSectionsProviding, Man
         });
 
         const response = await this.requestManager.schedule(request, 1);
-        this.CloudFlareError(response.status);
         const $ = this.cheerio.load(response.data as string);
 
         const titles = [$("h1.comics-detail__title").text().trim()];
@@ -295,7 +271,6 @@ export class Baozimh implements ChapterProviding, HomePageSectionsProviding, Man
         });
 
         let response = await this.requestManager.schedule(request, 1);
-        this.CloudFlareError(response.status);
         let $ = this.cheerio.load(response.data as string);
 
         const idLinks = $("div.comics-card > a.comics-card__info").toArray()
