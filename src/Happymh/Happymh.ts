@@ -23,7 +23,7 @@ import {
 const HAPPYMH_URL = "https://m.happymh.com";
 
 export const HappymhInfo: SourceInfo = {
-    version: "0.0.2",
+    version: "0.0.3",
     name: "嗨皮漫画",
     icon: "icon.png",
     author: "hanqinilnix",
@@ -118,15 +118,16 @@ export class Happymh implements ChapterProviding, HomePageSectionsProviding, Man
         )]
         sectionCallback(testSection);
 
-        const dailySectionItems = $('div.manga-area').eq(0).toArray();
-        const dailyTitle = $(dailySectionItems).find('h3').text();
+        const dailySectionElement = $('div.manga-area').eq(0);
+        const dailyTitle = $(dailySectionElement).find('h3').text();
         const dailySection = App.createHomeSection({
             id: "1",
             title: dailyTitle,
             type: HomeSectionType.singleRowNormal,
-            containsMoreItems: true,
+            containsMoreItems: false,
         });
         sectionCallback(dailySection);
+        const dailySectionItems = $(dailySectionElement).find('div.manga-cover').toArray();
         dailySection.items = dailySectionItems.map(
             (manga: CheerioElement): PartialSourceManga => App.createPartialSourceManga({
                 mangaId: $(manga).find('a').attr('href') as string,
