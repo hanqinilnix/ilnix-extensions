@@ -101,27 +101,10 @@ export class Happymh implements ChapterProviding, HomePageSectionsProviding, Man
         this.CloudFlareError(response.status);
         const $ = this.cheerio.load(response.data as string);
 
-        const testSection = App.createHomeSection({
-            id: "0",
-            title: "Test",
-            type: HomeSectionType.singleRowNormal,
-            containsMoreItems: true,
-        });
-        sectionCallback(testSection);
-        testSection.items = [App.createPartialSourceManga(
-            {
-                mangaId: 'https://m.happymh.com/manga/wodemeimeilaizilinguo',
-                image: 'https://rr.happymh.com/mcover/5a3976e55a0e0088225d5ea67dfe8860.jpg',
-                title: '我的妹妹来自邻国',
-                subtitle: '更新至：第26话 找个猪头当男友',
-            }
-        )]
-        sectionCallback(testSection);
-
         const dailySectionElement = $('div.manga-area').eq(0);
         const dailyTitle = $(dailySectionElement).find('h3').text();
         const dailySection = App.createHomeSection({
-            id: "1",
+            id: "daily",
             title: dailyTitle,
             type: HomeSectionType.singleRowNormal,
             containsMoreItems: false,
@@ -134,8 +117,103 @@ export class Happymh implements ChapterProviding, HomePageSectionsProviding, Man
                 image: $(manga).find('mip-img').attr('src') as string,
                 title: $(manga).find('.manga-title').text(),
             })
-        )
+        );
         sectionCallback(dailySection);
+
+        const hotSectionElement = $('div.manga-area').eq(1);
+        const hotTitle = $(hotSectionElement).find('h3').text();
+        const hotSection = App.createHomeSection({
+            id: "hot",
+            title: hotTitle,
+            type: HomeSectionType.singleRowNormal,
+            containsMoreItems: false,
+        });
+        sectionCallback(hotSection);
+        const hotSectionItems = $(hotSectionElement).find('div.manga-cover').toArray();
+        hotSection.items = hotSectionItems.map(
+            (manga: CheerioElement): PartialSourceManga => App.createPartialSourceManga({
+                mangaId: $(manga).find('a').attr('href') as string,
+                image: $(manga).find('mip-img').attr('src') as string,
+                title: $(manga).find('.manga-title').text(),
+            })
+        );
+        sectionCallback(hotSection);
+        
+        const shaonianSectionElement = $('div.manga-area').eq(2);
+        const shaonianTitle = $(shaonianSectionElement).find('h3').text();
+        const shaonianSection = App.createHomeSection({
+            id: "shaonian",
+            title: shaonianTitle,
+            type: HomeSectionType.singleRowNormal,
+            containsMoreItems: false,
+        });
+        sectionCallback(shaonianSection);
+        const shaonianSectionItems = $(shaonianSectionElement).find('div.manga-cover').toArray();
+        shaonianSection.items = shaonianSectionItems.map(
+            (manga: CheerioElement): PartialSourceManga => App.createPartialSourceManga({
+                mangaId: $(manga).find('a').attr('href') as string,
+                image: $(manga).find('mip-img').attr('src') as string,
+                title: $(manga).find('.manga-title').text(),
+            })
+        );
+        sectionCallback(shaonianSection);
+        
+        const shaonvSectionElement = $('div.manga-area').eq(3);
+        const shaonvTitle = $(shaonvSectionElement).find('h3').text();
+        const shaonvSection = App.createHomeSection({
+            id: "shaonv",
+            title: shaonvTitle,
+            type: HomeSectionType.singleRowNormal,
+            containsMoreItems: false,
+        });
+        sectionCallback(shaonvSection);
+        const shaonvSectionItems = $(shaonvSectionElement).find('div.manga-cover').toArray();
+        shaonvSection.items = shaonvSectionItems.map(
+            (manga: CheerioElement): PartialSourceManga => App.createPartialSourceManga({
+                mangaId: $(manga).find('a').attr('href') as string,
+                image: $(manga).find('mip-img').attr('src') as string,
+                title: $(manga).find('.manga-title').text(),
+            })
+        );
+        sectionCallback(shaonvSection);
+
+        const blSectionElement = $('div.manga-area').eq(4);
+        const blTitle = $(blSectionElement).find('h3').text();
+        const blSection = App.createHomeSection({
+            id: "bl",
+            title: blTitle,
+            type: HomeSectionType.singleRowNormal,
+            containsMoreItems: false,
+        });
+        sectionCallback(blSection);
+        const blSectionItems = $(blSectionElement).find('div.manga-cover').toArray();
+        blSection.items = blSectionItems.map(
+            (manga: CheerioElement): PartialSourceManga => App.createPartialSourceManga({
+                mangaId: $(manga).find('a').attr('href') as string,
+                image: $(manga).find('mip-img').attr('src') as string,
+                title: $(manga).find('.manga-title').text(),
+            })
+        );
+        sectionCallback(blSection);
+
+        const hotUpdateSectionElement = $('div.manga-area').eq(5);
+        const hotUpdateTitle = $(hotUpdateSectionElement).find('h3').text();
+        const hotUpdateSection = App.createHomeSection({
+            id: "hotUpdate",
+            title: hotUpdateTitle,
+            type: HomeSectionType.singleRowNormal,
+            containsMoreItems: false,
+        });
+        sectionCallback(hotUpdateSection);
+        const hotUpdateSectionItems = $(hotUpdateSectionElement).find('div.manga-cover').toArray();
+        hotUpdateSection.items = hotUpdateSectionItems.map(
+            (manga: CheerioElement): PartialSourceManga => App.createPartialSourceManga({
+                mangaId: $(manga).find('a').attr('href') as string,
+                image: $(manga).find('mip-img').attr('src') as string,
+                title: $(manga).find('.manga-title').text(),
+            })
+        );
+        sectionCallback(hotUpdateSection);
     }
 
     async getViewMoreItems(homepageSectionId: string, metadata: any): Promise<PagedResults> {
