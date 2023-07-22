@@ -32,13 +32,7 @@ export const BaozimhInfo: SourceInfo = {
     contentRating: ContentRating.EVERYONE,
     websiteBaseURL: BAOZIMH_URL,
     authorWebsite: "https://github.com/hanqinilnix",
-    sourceTags: [
-        {
-            text: "Cloudflare",
-            type: BadgeColor.RED,
-        },
-    ],
-    intents: SourceIntents.MANGA_CHAPTERS | SourceIntents.HOMEPAGE_SECTIONS | SourceIntents.CLOUDFLARE_BYPASS_REQUIRED,
+    intents: SourceIntents.MANGA_CHAPTERS | SourceIntents.HOMEPAGE_SECTIONS,
 };
 
 export class Baozimh implements ChapterProviding, HomePageSectionsProviding, MangaProviding, SearchResultsProviding {
