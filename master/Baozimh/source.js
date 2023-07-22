@@ -462,9 +462,10 @@ __exportStar(require("./compat/DyamicUI"), exports);
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Baozimh = exports.BaozimhInfo = void 0;
 const types_1 = require("@paperback/types");
-const BAOZIMH_URL = "https://cn.baozimh.com";
+// const BAOZIMH_URL = "https://cn.baozimh.com";
+const BAOZIMH_URL = "https://cn.czmanga.com";
 exports.BaozimhInfo = {
-    version: "2.0.3",
+    version: "2.0.4",
     name: "包子漫画",
     icon: "icon.png",
     author: "hanqinilnix",
@@ -503,28 +504,12 @@ class Baozimh {
             }
         });
     }
-    CloudFlareError(status) {
-        if (status == 503 || status == 403) {
-            throw new Error(`CLOUDFLARE BYPASS ERROR:\nPlease go to the homepage of <${Baozimh.name}> and press the cloud icon.`);
-        }
-    }
-    async getCloudflareBypassRequestAsync() {
-        return App.createRequest({
-            url: BAOZIMH_URL,
-            method: "GET",
-            headers: {
-                referer: `${BAOZIMH_URL}/`,
-                "user-agent": await this.requestManager.getDefaultUserAgent(),
-            },
-        });
-    }
     async getChapters(mangaId) {
         const request = App.createRequest({
             url: `${BAOZIMH_URL}/${mangaId}`,
             method: "GET",
         });
         const response = await this.requestManager.schedule(request, 1);
-        this.CloudFlareError(response.status);
         const $ = this.cheerio.load(response.data);
         const getChapterNumber = (link) => {
             let chapterNumber = "";
@@ -566,7 +551,6 @@ class Baozimh {
             method: "GET",
         });
         let response = await this.requestManager.schedule(request, 2);
-        this.CloudFlareError(response.status);
         let $ = this.cheerio.load(response.data);
         let currentPageNumber = 1;
         let hasNextChapter = $(".next_chapter").toArray()
@@ -579,7 +563,6 @@ class Baozimh {
                 method: "GET",
             });
             response = await this.requestManager.schedule(request, 1);
-            this.CloudFlareError(response.status);
             $ = this.cheerio.load(response.data);
             hasNextChapter = $(".next_chapter").toArray()
                 .map((nextChapter) => $(nextChapter).text().trim())
@@ -607,7 +590,6 @@ class Baozimh {
             method: "GET",
         });
         const response = await this.requestManager.schedule(request, 1);
-        this.CloudFlareError(response.status);
         const $ = this.cheerio.load(response.data);
         const popularSection = App.createHomeSection({
             id: "0",
@@ -655,7 +637,6 @@ class Baozimh {
             method: "GET",
         });
         const response = await this.requestManager.schedule(request, 1);
-        this.CloudFlareError(response.status);
         const $ = this.cheerio.load(response.data);
         const titles = [$("h1.comics-detail__title").text().trim()];
         const images = $("amp-img").toArray()
@@ -696,7 +677,6 @@ class Baozimh {
             method: "GET",
         });
         let response = await this.requestManager.schedule(request, 1);
-        this.CloudFlareError(response.status);
         let $ = this.cheerio.load(response.data);
         const idLinks = $("div.comics-card > a.comics-card__info").toArray()
             .map((element) => $(element).attr("href")?.trim());
