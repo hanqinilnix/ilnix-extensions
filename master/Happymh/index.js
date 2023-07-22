@@ -464,7 +464,7 @@ exports.Happymh = exports.HappymhInfo = void 0;
 const types_1 = require("@paperback/types");
 const HAPPYMH_URL = "https://m.happymh.com";
 exports.HappymhInfo = {
-    version: "0.0.2",
+    version: "0.0.3",
     name: "嗨皮漫画",
     icon: "icon.png",
     author: "hanqinilnix",
@@ -546,15 +546,16 @@ class Happymh {
                 subtitle: '更新至：第26话 找个猪头当男友',
             })];
         sectionCallback(testSection);
-        const dailySectionItems = $('div.manga-area').eq(0).toArray();
-        const dailyTitle = $(dailySectionItems).find('h3').text();
+        const dailySectionElement = $('div.manga-area').eq(0);
+        const dailyTitle = $(dailySectionElement).find('h3').text();
         const dailySection = App.createHomeSection({
             id: "1",
             title: dailyTitle,
             type: types_1.HomeSectionType.singleRowNormal,
-            containsMoreItems: true,
+            containsMoreItems: false,
         });
         sectionCallback(dailySection);
+        const dailySectionItems = $(dailySectionElement).find('div.manga-cover').toArray();
         dailySection.items = dailySectionItems.map((manga) => App.createPartialSourceManga({
             mangaId: $(manga).find('a').attr('href'),
             image: $(manga).find('mip-img').attr('src'),
