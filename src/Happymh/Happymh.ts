@@ -90,6 +90,7 @@ export class Happymh implements ChapterProviding, HomePageSectionsProviding, Man
         });
 
         const response = await this.requestManager.schedule(request, 1);
+        this.CloudFlareError(response.status);
         const $ = this.cheerio.load(response.data as string);
 
         const mangaDetails = JSON.parse($('mip-data > script').eq(3).text().trim());
@@ -116,6 +117,8 @@ export class Happymh implements ChapterProviding, HomePageSectionsProviding, Man
         });
 
         const response = await this.requestManager.schedule(request, 1);
+        this.CloudFlareError(response.status);
+        
         const chapterDetails = JSON.parse(response.data as string);
         const chapterData = chapterDetails["data"];
         const chapterPages = chapterData["scans"];
@@ -280,6 +283,7 @@ export class Happymh implements ChapterProviding, HomePageSectionsProviding, Man
         });
 
         const response = await this.requestManager.schedule(request, 1);
+        this.CloudFlareError(response.status);
         const $ = this.cheerio.load(response.data as string);
 
         const imageLink = $('div.mg-cover > mip-image').attr('src') as string;
