@@ -74,10 +74,10 @@ export class Happymh implements ChapterProviding, HomePageSectionsProviding, Man
 
     async getCloudflareBypassRequestAsync(): Promise<Request> {
         return App.createRequest({
-            url: HAPPYMH_URL,
+            url: `${HAPPYMH_URL}//v2.0/apis/manga/read`,
             method: "GET",
             headers: {
-                referer: `${HAPPYMH_URL}//v2.0/apis/manga/read`,
+                referer: `${HAPPYMH_URL}/`,
                 "user-agent": await this.requestManager.getDefaultUserAgent(),
             },
         });
