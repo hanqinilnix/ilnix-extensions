@@ -464,7 +464,7 @@ exports.Happymh = exports.HappymhInfo = void 0;
 const types_1 = require("@paperback/types");
 const HAPPYMH_URL = "https://m.happymh.com";
 exports.HappymhInfo = {
-    version: "0.0.3",
+    version: "0.0.4",
     name: "嗨皮漫画",
     icon: "icon.png",
     author: "hanqinilnix",
@@ -680,6 +680,7 @@ class Happymh {
         const status = $('div.ongoing-status').text().trim();
         const title = $('h2.mg-title').text().trim();
         const altTitle = $('p.mg-sub-title').eq(-1).text().trim();
+        throw new Error(`Title: ${title}`);
         return App.createSourceManga({
             id: mangaId,
             mangaInfo: App.createMangaInfo({
