@@ -74,7 +74,7 @@ export class Happymh implements ChapterProviding, HomePageSectionsProviding, Man
 
     async getCloudflareBypassRequestAsync(): Promise<Request> {
         return App.createRequest({
-            url: `${HAPPYMH_URL}//v2.0/apis/manga/read`,
+            url: `${HAPPYMH_URL}/v2.0/apis/manga/read`,
             method: "GET",
             headers: {
                 referer: `${HAPPYMH_URL}/`,
@@ -138,7 +138,6 @@ export class Happymh implements ChapterProviding, HomePageSectionsProviding, Man
         });
 
         const response = await pageRequestManager.schedule(request, 1);
-        throw new Error(response.data);
         this.CloudFlareError(response.status);
 
         const chapterDetails = JSON.parse(response.data as string);
