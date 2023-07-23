@@ -464,7 +464,7 @@ exports.Happymh = exports.HappymhInfo = void 0;
 const types_1 = require("@paperback/types");
 const HAPPYMH_URL = "https://m.happymh.com";
 exports.HappymhInfo = {
-    version: "0.0.4",
+    version: "0.0.5",
     name: "嗨皮漫画",
     icon: "icon.png",
     author: "hanqinilnix",
@@ -675,11 +675,11 @@ class Happymh {
         const response = await this.requestManager.schedule(request, 1);
         this.CloudFlareError(response.status);
         const $ = this.cheerio.load(response.data);
-        const imageLink = $('div.mg-cover > mip-image').attr('src');
+        const imageLink = $('div.mg-cover > mip-img').attr('src');
         const description = $('mip-showmore#showmore').text().trim();
         const status = $('div.ongoing-status').text().trim();
         const title = $('h2.mg-title').text().trim();
-        throw new Error(`imageLink: ${imageLink}\nDescription:${description}\nStatus:${status}\nTitle:${title}`);
+        // throw new Error(`imageLink: ${imageLink}\nDescription:${description}\nStatus:${status}\nTitle:${title}`);
         return App.createSourceManga({
             id: mangaId,
             mangaInfo: App.createMangaInfo({
