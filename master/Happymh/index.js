@@ -737,10 +737,10 @@ class Happymh {
         const request = App.createRequest({
             url: `${HAPPYMH_URL}/apis/m/ssearch`,
             method: "POST",
-            data: `searchkey=${query.title}`
+            param: `searchkey=${query.title}`
         });
         const response = await searchRequestManager.schedule(request, 1);
-        throw new Error(`query: ${query.title}\nResponse: ${response.data}`);
+        // throw new Error(`query: ${query.title}\nResponse: ${response.data as string}`);
         const searchDetails = JSON.parse(response.data);
         const searchData = searchDetails["data"];
         const mangaJsonData = searchData["scans"];
