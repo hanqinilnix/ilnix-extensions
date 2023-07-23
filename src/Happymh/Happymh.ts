@@ -23,7 +23,7 @@ import {
 const HAPPYMH_URL = "https://m.happymh.com";
 
 export const HappymhInfo: SourceInfo = {
-    version: "0.0.3",
+    version: "0.0.4",
     name: "嗨皮漫画",
     icon: "icon.png",
     author: "hanqinilnix",
@@ -118,7 +118,7 @@ export class Happymh implements ChapterProviding, HomePageSectionsProviding, Man
 
         const response = await this.requestManager.schedule(request, 1);
         this.CloudFlareError(response.status);
-        
+
         const chapterDetails = JSON.parse(response.data as string);
         const chapterData = chapterDetails["data"];
         const chapterPages = chapterData["scans"];
@@ -291,6 +291,7 @@ export class Happymh implements ChapterProviding, HomePageSectionsProviding, Man
         const status = $('div.ongoing-status').text().trim();
         const title = $('h2.mg-title').text().trim();
         const altTitle = $('p.mg-sub-title').eq(-1).text().trim();
+        throw new Error(`Title: ${title}`);
 
         return App.createSourceManga({
             id: mangaId,
