@@ -741,9 +741,9 @@ class Happymh {
         });
         const response = await searchRequestManager.schedule(request, 1);
         const searchDetails = JSON.parse(response.data);
-        // throw new Error(`query: ${query.title}\nResponse: ${response.data as string}`);
         const searchData = searchDetails["data"];
         const mangaJsonData = searchData["items"];
+        throw new Error(`query: ${query.title}\nResponse: ${mangaJsonData[0]}`);
         const mangaSourceData = mangaJsonData.map((manga) => {
             return App.createPartialSourceManga({
                 mangaId: manga['manga_code'],
