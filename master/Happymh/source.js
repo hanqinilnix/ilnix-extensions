@@ -510,10 +510,10 @@ class Happymh {
     }
     async getCloudflareBypassRequestAsync() {
         return App.createRequest({
-            url: HAPPYMH_URL,
+            url: `${HAPPYMH_URL}//v2.0/apis/manga/read`,
             method: "GET",
             headers: {
-                referer: `${HAPPYMH_URL}//v2.0/apis/manga/read`,
+                referer: `${HAPPYMH_URL}/`,
                 "user-agent": await this.requestManager.getDefaultUserAgent(),
             },
         });
