@@ -23,7 +23,7 @@ import {
 const HAPPYMH_URL = "https://m.happymh.com";
 
 export const HappymhInfo: SourceInfo = {
-    version: "0.0.8",
+    version: "0.0.9",
     name: "嗨皮漫画",
     icon: "icon.png",
     author: "hanqinilnix",
@@ -93,17 +93,13 @@ export class Happymh implements ChapterProviding, HomePageSectionsProviding, Man
         this.CloudFlareError(response.status);
         const $ = this.cheerio.load(response.data as string);
         
-        const mangaDetails = $('mip-data > script').eq(2).html() as string;
-        const mangaDetailsLength = $('mip-data > script').length;
-        const testDetails = $('div.manga-cover').length;
+        const mangaDetails = JSON.parse($('mip-data > script').eq(2).html() as string);
         type ChapterType = {
             id: string,
             chapterName: string,
             isNew: boolean
         }
-        throw new Error(`Details: ${mangaDetailsLength} / ${testDetails}\n${mangaDetails}`);
-        const mangaDetailsParse = JSON.parse(mangaDetails);
-        const chapters = mangaDetailsParse['chapterList'].reverse();
+        const chapters = mangaDetails['chapterList'].reverse();
 
         return chapters.map((chapter: ChapterType, index: number) => App.createChapter(
             {
