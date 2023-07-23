@@ -335,6 +335,7 @@ export class Happymh implements ChapterProviding, HomePageSectionsProviding, Man
         })
 
         const response = await this.requestManager.schedule(request, 1);
+        throw new Error(`Response: ${response.data as string}`);
         const searchDetails = JSON.parse(response.data as string);
         const searchData = searchDetails["data"];
         const mangaJsonData = searchData["scans"];
@@ -346,18 +347,18 @@ export class Happymh implements ChapterProviding, HomePageSectionsProviding, Man
             genre_ids: string,
             author: string,
             other_names: string,
-        }
+        };
         const mangaSourceData = mangaJsonData.map((manga: MangaType): PartialSourceManga => {
             return App.createPartialSourceManga({
                 mangaId: manga['manga_code'],
                 image: manga['cover'],
                 title: manga['name'],
-            })
-        })
+            });
+        });
 
         return App.createPagedResults({
             results: mangaSourceData,
             metadata: metadata,
-        })
+        });
     }
 }
