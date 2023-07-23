@@ -23,7 +23,7 @@ import {
 const HAPPYMH_URL = "https://m.happymh.com";
 
 export const HappymhInfo: SourceInfo = {
-    version: "0.0.10",
+    version: "0.0.11",
     name: "嗨皮漫画",
     icon: "icon.png",
     author: "hanqinilnix",
@@ -328,6 +328,36 @@ export class Happymh implements ChapterProviding, HomePageSectionsProviding, Man
     }
 
     async getSearchResults(query: SearchRequest, metadata: unknown): Promise<PagedResults> {
-        throw new Error("Method not implemented.");
+        const request = App.createRequest({
+            url: `${HAPPYMH_URL}/apis/m/ssearch`,
+            method: "POST",
+            data: `searchkey=${query.title as string}`
+        })
+
+        const response = await this.requestManager.schedule(request, 1);
+        const searchDetails = JSON.parse(response.data as string);
+        const searchData = searchDetails["data"];
+        const mangaJsonData = searchData["scans"];
+        type MangaType = {
+            id: string,
+            name: string,
+            cover: string,
+            manga_code: string,
+            genre_ids: string,
+            author: string,
+            other_names: string,
+        }
+        const mangaSourceData = mangaJsonData.map((manga: MangaType): PartialSourceManga => {
+            return App.createPartialSourceManga({
+                mangaId: manga['manga_code'],
+                image: manga['cover'],
+                title: manga['name'],
+            })
+        })
+
+        return App.createPagedResults({
+            results: mangaSourceData,
+            metadata: metadata,
+        })
     }
 }
