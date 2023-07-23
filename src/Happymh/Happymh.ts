@@ -353,11 +353,12 @@ export class Happymh implements ChapterProviding, HomePageSectionsProviding, Man
         const request = App.createRequest({
             url: `${HAPPYMH_URL}/apis/m/ssearch`,
             method: "POST",
-            param: `searchkey=${query.title}`
+            param: `searchkey=${query.title}`,
+            data: `searchkey=${query.title}`,
         })
 
         const response = await searchRequestManager.schedule(request, 1);
-        // throw new Error(`query: ${query.title}\nResponse: ${response.data}`);
+        throw new Error(`query: ${query.title}\nResponse: ${response.data}`);
         const searchDetails = JSON.parse('{' + response.data as string + '}');
         const searchData = searchDetails["data"];
         const mangaJsonData = searchData["items"];
