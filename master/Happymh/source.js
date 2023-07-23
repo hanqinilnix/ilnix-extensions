@@ -740,8 +740,8 @@ class Happymh {
             param: `searchkey=${query.title}`
         });
         const response = await searchRequestManager.schedule(request, 1);
+        throw new Error(`query: ${query.title}\nResponse: ${response.data}`);
         const searchDetails = JSON.parse(response.data);
-        throw new Error(`query: ${query.title}\nResponse: ${searchDetails['data']['items'][0]}`);
         const searchData = searchDetails["data"];
         const mangaJsonData = searchData["items"];
         const mangaSourceData = mangaJsonData.map((manga) => {
