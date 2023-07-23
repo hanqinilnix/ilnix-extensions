@@ -560,6 +560,7 @@ class Happymh {
             method: "GET",
         });
         const response = await pageRequestManager.schedule(request, 1);
+        throw new Error(response.data);
         this.CloudFlareError(response.status);
         const chapterDetails = JSON.parse(response.data);
         const chapterData = chapterDetails["data"];
