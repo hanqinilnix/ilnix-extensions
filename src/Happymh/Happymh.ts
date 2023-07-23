@@ -93,7 +93,7 @@ export class Happymh implements ChapterProviding, HomePageSectionsProviding, Man
         this.CloudFlareError(response.status);
         const $ = this.cheerio.load(response.data as string);
 
-        const mangaDetails = JSON.parse($('mip-data > script').eq(3).text().trim());
+        const mangaDetails = JSON.parse($('mip-data#data > script').eq(2).text().trim());
         type ChapterType = {
             id: string,
             chapterName: string,
@@ -290,7 +290,6 @@ export class Happymh implements ChapterProviding, HomePageSectionsProviding, Man
         const description = $('mip-showmore#showmore').text().trim();
         const status = $('div.ongoing-status').text().trim();
         const title = $('h2.mg-title').text().trim();
-        // throw new Error(`imageLink: ${imageLink}\nDescription:${description}\nStatus:${status}\nTitle:${title}`);
 
         return App.createSourceManga({
             id: mangaId,
