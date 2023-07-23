@@ -110,7 +110,28 @@ export class Happymh implements ChapterProviding, HomePageSectionsProviding, Man
     }
 
     async getChapterDetails(mangaId: string, chapterId: string): Promise<ChapterDetails> {
-        throw new Error("Method not implemented.");
+        const request = App.createRequest({
+            url: `${HAPPYMH_URL}/v2.0/apis/manga/read?code=${mangaId}&cid=${chapterId}`,
+            method: "GET",
+        });
+
+        const response = await this.requestManager.schedule(request, 1);
+        const chapterDetails = JSON.parse(response.data as string);
+        const chapterData = chapterDetails["data"];
+        const chapterPages = chapterData["scans"];
+        type PageType = {
+            url: string,
+            r: number,
+            n: number,
+            width: number,
+            height: number,
+        }
+
+        return App.createChapterDetails({
+            id: chapterId,
+            mangaId: mangaId,
+            pages: chapterPages.map((page: PageType): string => page['url']),
+        });
     }
 
     async getHomePageSections(sectionCallback: (section: HomeSection) => void): Promise<void> {
