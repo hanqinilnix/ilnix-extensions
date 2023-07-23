@@ -99,6 +99,7 @@ export class Happymh implements ChapterProviding, HomePageSectionsProviding, Man
             chapterName: string,
             isNew: boolean
         }
+        throw new Error(`Details: ${mangaDetails}`);
         const mangaDetailsParse = JSON.parse(mangaDetails);
         const chapters = mangaDetailsParse['chapterList'].reverse();
 
