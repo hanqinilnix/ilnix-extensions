@@ -84,7 +84,29 @@ export class Happymh implements ChapterProviding, HomePageSectionsProviding, Man
     }
 
     async getChapters(mangaId: string): Promise<Chapter[]> {
-        throw new Error("Method not implemented.");
+        const request = App.createRequest({
+            url: `${mangaId}`,
+            method: "GET",
+        });
+
+        const response = await this.requestManager.schedule(request, 1);
+        const $ = this.cheerio.load(response.data as string);
+
+        const mangaDetails = JSON.parse($('mip-data > script').eq(3).text().trim());
+        type ChapterType = {
+            id: string,
+            chapterName: string,
+            isNew: boolean
+        }
+        const chapters = mangaDetails['chapterList'].reverse();
+
+        return chapters.map((chapter: ChapterType, index: number) => App.createChapter(
+            {
+                id: chapter['id'].trim(),
+                chapNum: index,
+                name: chapter['chapterName'].trim(),
+            }
+        ));
     }
 
     async getChapterDetails(mangaId: string, chapterId: string): Promise<ChapterDetails> {
@@ -140,7 +162,7 @@ export class Happymh implements ChapterProviding, HomePageSectionsProviding, Man
             })
         );
         sectionCallback(hotSection);
-        
+
         const shaonianSectionElement = $('div.manga-area').eq(2);
         const shaonianTitle = $(shaonianSectionElement).find('h3').text();
         const shaonianSection = App.createHomeSection({
@@ -160,7 +182,7 @@ export class Happymh implements ChapterProviding, HomePageSectionsProviding, Man
             })
         );
         sectionCallback(shaonianSection);
-        
+
         const shaonvSectionElement = $('div.manga-area').eq(3);
         const shaonvTitle = $(shaonvSectionElement).find('h3').text();
         const shaonvSection = App.createHomeSection({
@@ -227,11 +249,33 @@ export class Happymh implements ChapterProviding, HomePageSectionsProviding, Man
     }
 
     async getMangaDetails(mangaId: string): Promise<SourceManga> {
-        throw new Error("Method not implemented.");
+        const request = App.createRequest({
+            url: `${mangaId}`,
+            method: "GET",
+        });
+
+        const response = await this.requestManager.schedule(request, 1);
+        const $ = this.cheerio.load(response.data as string);
+
+        const imageLink = $('div.mg-cover > mip-image').attr('src') as string;
+        const description = $('mip-showmore#showmore').text().trim();
+        const status = $('div.ongoing-status').text().trim();
+        const title = $('h2.mg-title').text().trim();
+        const altTitle = $('p.mg-sub-title').eq(-1).text().trim();
+
+        return App.createSourceManga({
+            id: mangaId,
+            mangaInfo: App.createMangaInfo({
+                image: imageLink,
+                desc: description,
+                status: status,
+                titles: [title, altTitle],
+            }),
+        });
     }
 
     getMangaShareUrl?(mangaId: string): string {
-        throw new Error("Method not implemented.");
+        return (`${mangaId}`);
     }
 
     async getSearchResults(query: SearchRequest, metadata: unknown): Promise<PagedResults> {
