@@ -526,7 +526,7 @@ class Happymh {
         const response = await this.requestManager.schedule(request, 1);
         this.CloudFlareError(response.status);
         const $ = this.cheerio.load(response.data);
-        const mangaDetails = JSON.parse($('mip-data > script').eq(3).text().trim());
+        const mangaDetails = JSON.parse($('mip-data#data > script').eq(2).text().trim());
         const chapters = mangaDetails['chapterList'].reverse();
         return chapters.map((chapter, index) => App.createChapter({
             id: chapter['id'].trim(),
@@ -679,7 +679,6 @@ class Happymh {
         const description = $('mip-showmore#showmore').text().trim();
         const status = $('div.ongoing-status').text().trim();
         const title = $('h2.mg-title').text().trim();
-        // throw new Error(`imageLink: ${imageLink}\nDescription:${description}\nStatus:${status}\nTitle:${title}`);
         return App.createSourceManga({
             id: mangaId,
             mangaInfo: App.createMangaInfo({
