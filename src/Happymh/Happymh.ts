@@ -77,7 +77,7 @@ export class Happymh implements ChapterProviding, HomePageSectionsProviding, Man
             url: HAPPYMH_URL,
             method: "GET",
             headers: {
-                referer: `${HAPPYMH_URL}/`,
+                referer: `${HAPPYMH_URL}//v2.0/apis/manga/read`,
                 "user-agent": await this.requestManager.getDefaultUserAgent(),
             },
         });
