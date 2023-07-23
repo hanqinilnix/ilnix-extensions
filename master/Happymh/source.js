@@ -526,8 +526,8 @@ class Happymh {
         const response = await this.requestManager.schedule(request, 1);
         this.CloudFlareError(response.status);
         const $ = this.cheerio.load(response.data);
-        const mangaDetails = $('mip-data#data > script').eq(2).text().trim();
-        throw new Error(mangaDetails);
+        const mangaDetails = $('mip-data#data').eq(2).text().trim();
+        throw new Error(`MangaDetails: ${mangaDetails}`);
         const mangaDetailsParse = JSON.parse(mangaDetails);
         const chapters = mangaDetailsParse['chapterList'].reverse();
         return chapters.map((chapter, index) => App.createChapter({
