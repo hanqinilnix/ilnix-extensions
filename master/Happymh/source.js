@@ -464,7 +464,7 @@ exports.Happymh = exports.HappymhInfo = void 0;
 const types_1 = require("@paperback/types");
 const HAPPYMH_URL = "https://m.happymh.com";
 exports.HappymhInfo = {
-    version: "0.0.8",
+    version: "0.0.9",
     name: "嗨皮漫画",
     icon: "icon.png",
     author: "hanqinilnix",
@@ -526,12 +526,8 @@ class Happymh {
         const response = await this.requestManager.schedule(request, 1);
         this.CloudFlareError(response.status);
         const $ = this.cheerio.load(response.data);
-        const mangaDetails = $('mip-data > script').eq(2).html();
-        const mangaDetailsLength = $('mip-data > script').length;
-        const testDetails = $('div.manga-cover').length;
-        throw new Error(`Details: ${mangaDetailsLength} / ${testDetails}\n${mangaDetails}`);
-        const mangaDetailsParse = JSON.parse(mangaDetails);
-        const chapters = mangaDetailsParse['chapterList'].reverse();
+        const mangaDetails = JSON.parse($('mip-data > script').eq(2).html());
+        const chapters = mangaDetails['chapterList'].reverse();
         return chapters.map((chapter, index) => App.createChapter({
             id: chapter['id'].trim(),
             chapNum: index,
