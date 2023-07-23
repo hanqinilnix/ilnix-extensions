@@ -93,7 +93,7 @@ export class Happymh implements ChapterProviding, HomePageSectionsProviding, Man
         this.CloudFlareError(response.status);
         const $ = this.cheerio.load(response.data as string);
         
-        const mangaDetails = $('mip-data > script').html() as string;
+        const mangaDetails = $('mip-data > script').eq(2).html() as string;
         const mangaDetailsLength = $('mip-data > script').length;
         const testDetails = $('div.manga-cover').length;
         type ChapterType = {
