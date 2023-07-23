@@ -464,7 +464,7 @@ exports.Happymh = exports.HappymhInfo = void 0;
 const types_1 = require("@paperback/types");
 const HAPPYMH_URL = "https://m.happymh.com";
 exports.HappymhInfo = {
-    version: "0.0.10",
+    version: "0.0.11",
     name: "嗨皮漫画",
     icon: "icon.png",
     author: "hanqinilnix",
@@ -713,7 +713,26 @@ class Happymh {
         return `${HAPPYMH_URL}/manga/${mangaId}`;
     }
     async getSearchResults(query, metadata) {
-        throw new Error("Method not implemented.");
+        const request = App.createRequest({
+            url: `${HAPPYMH_URL}/apis/m/ssearch`,
+            method: "POST",
+            data: `searchkey=${query.title}`
+        });
+        const response = await this.requestManager.schedule(request, 1);
+        const searchDetails = JSON.parse(response.data);
+        const searchData = searchDetails["data"];
+        const mangaJsonData = searchData["scans"];
+        const mangaSourceData = mangaJsonData.map((manga) => {
+            return App.createPartialSourceManga({
+                mangaId: manga['manga_code'],
+                image: manga['cover'],
+                title: manga['name'],
+            });
+        });
+        return App.createPagedResults({
+            results: mangaSourceData,
+            metadata: metadata,
+        });
     }
 }
 exports.Happymh = Happymh;
