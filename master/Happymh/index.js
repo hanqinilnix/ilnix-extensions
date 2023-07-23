@@ -713,12 +713,33 @@ class Happymh {
         return `${HAPPYMH_URL}/manga/${mangaId}`;
     }
     async getSearchResults(query, metadata) {
+        const searchRequestManager = App.createRequestManager({
+            requestsPerSecond: 3,
+            requestTimeout: 15000,
+            interceptor: {
+                interceptRequest: async (request) => {
+                    request.headers = {
+                        ...(request.headers ?? {}),
+                        ...{
+                            referer: `${HAPPYMH_URL}/sssearch`,
+                            origin: `${HAPPYMH_URL}`,
+                            "user-agent": await this.requestManager.getDefaultUserAgent(),
+                            "X-Requested-With": "XMLHttpRequest",
+                        },
+                    };
+                    return request;
+                },
+                interceptResponse: async (response) => {
+                    return response;
+                }
+            }
+        });
         const request = App.createRequest({
             url: `${HAPPYMH_URL}/apis/m/ssearch`,
             method: "POST",
-            param: `searchkey=${query.title}`
+            data: { 'searchkey': query.title }
         });
-        const response = await this.requestManager.schedule(request, 1);
+        const response = await searchRequestManager.schedule(request, 1);
         throw new Error(`Response: ${response.data}`);
         const searchDetails = JSON.parse(response.data);
         const searchData = searchDetails["data"];
