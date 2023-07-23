@@ -358,7 +358,6 @@ export class Happymh implements ChapterProviding, HomePageSectionsProviding, Man
 
         const response = await searchRequestManager.schedule(request, 1);
         const searchDetails = JSON.parse(response.data as string);
-        // throw new Error(`query: ${query.title}\nResponse: ${response.data as string}`);
         const searchData = searchDetails["data"];
         const mangaJsonData = searchData["items"];
         type MangaType = {
@@ -370,6 +369,7 @@ export class Happymh implements ChapterProviding, HomePageSectionsProviding, Man
             author: string,
             other_names: string,
         };
+        throw new Error(`query: ${query.title}\nResponse: ${mangaJsonData[0]}`);
         const mangaSourceData = mangaJsonData.map((manga: MangaType): PartialSourceManga => {
             return App.createPartialSourceManga({
                 mangaId: manga['manga_code'],
