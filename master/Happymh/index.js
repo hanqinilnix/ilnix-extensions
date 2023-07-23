@@ -519,10 +519,34 @@ class Happymh {
         });
     }
     async getChapters(mangaId) {
-        throw new Error("Method not implemented.");
+        const request = App.createRequest({
+            url: `${HAPPYMH_URL}/manga/${mangaId}`,
+            method: "GET",
+        });
+        const response = await this.requestManager.schedule(request, 1);
+        const $ = this.cheerio.load(response.data);
+        const mangaDetails = JSON.parse($('mip-data > script').eq(3).text().trim());
+        const chapters = mangaDetails['chapterList'].reverse();
+        return chapters.map((chapter, index) => App.createChapter({
+            id: chapter['id'].trim(),
+            chapNum: index,
+            name: chapter['chapterName'].trim(),
+        }));
     }
     async getChapterDetails(mangaId, chapterId) {
-        throw new Error("Method not implemented.");
+        const request = App.createRequest({
+            url: `${HAPPYMH_URL}/v2.0/apis/manga/read?code=${mangaId}&cid=${chapterId}`,
+            method: "GET",
+        });
+        const response = await this.requestManager.schedule(request, 1);
+        const chapterDetails = JSON.parse(response.data);
+        const chapterData = chapterDetails["data"];
+        const chapterPages = chapterData["scans"];
+        return App.createChapterDetails({
+            id: chapterId,
+            mangaId: mangaId,
+            pages: chapterPages.map((page) => page['url']),
+        });
     }
     async getHomePageSections(sectionCallback) {
         const request = App.createRequest({
@@ -532,24 +556,13 @@ class Happymh {
         const response = await this.requestManager.schedule(request, 1);
         this.CloudFlareError(response.status);
         const $ = this.cheerio.load(response.data);
-        const testSection = App.createHomeSection({
-            id: "0",
-            title: "Test",
-            type: types_1.HomeSectionType.singleRowNormal,
-            containsMoreItems: true,
-        });
-        sectionCallback(testSection);
-        testSection.items = [App.createPartialSourceManga({
-                mangaId: 'https://m.happymh.com/manga/wodemeimeilaizilinguo',
-                image: 'https://rr.happymh.com/mcover/5a3976e55a0e0088225d5ea67dfe8860.jpg',
-                title: '我的妹妹来自邻国',
-                subtitle: '更新至：第26话 找个猪头当男友',
-            })];
-        sectionCallback(testSection);
+        const getMangaID = function (link) {
+            return link.split('/').at(-1);
+        };
         const dailySectionElement = $('div.manga-area').eq(0);
         const dailyTitle = $(dailySectionElement).find('h3').text();
         const dailySection = App.createHomeSection({
-            id: "1",
+            id: "daily",
             title: dailyTitle,
             type: types_1.HomeSectionType.singleRowNormal,
             containsMoreItems: false,
@@ -557,20 +570,125 @@ class Happymh {
         sectionCallback(dailySection);
         const dailySectionItems = $(dailySectionElement).find('div.manga-cover').toArray();
         dailySection.items = dailySectionItems.map((manga) => App.createPartialSourceManga({
-            mangaId: $(manga).find('a').attr('href'),
+            mangaId: getMangaID($(manga).find('a').attr('href')),
             image: $(manga).find('mip-img').attr('src'),
             title: $(manga).find('.manga-title').text(),
+            subtitle: $(manga).find('.manga-chapter').text(),
         }));
         sectionCallback(dailySection);
+        const hotSectionElement = $('div.manga-area').eq(1);
+        const hotTitle = $(hotSectionElement).find('h3').text();
+        const hotSection = App.createHomeSection({
+            id: "hot",
+            title: hotTitle,
+            type: types_1.HomeSectionType.singleRowNormal,
+            containsMoreItems: false,
+        });
+        sectionCallback(hotSection);
+        const hotSectionItems = $(hotSectionElement).find('div.manga-cover').toArray();
+        hotSection.items = hotSectionItems.map((manga) => App.createPartialSourceManga({
+            mangaId: getMangaID($(manga).find('a').attr('href')),
+            image: $(manga).find('mip-img').attr('src'),
+            title: $(manga).find('.manga-title').text(),
+            subtitle: $(manga).find('.manga-chapter').text(),
+        }));
+        sectionCallback(hotSection);
+        const shaonianSectionElement = $('div.manga-area').eq(2);
+        const shaonianTitle = $(shaonianSectionElement).find('h3').text();
+        const shaonianSection = App.createHomeSection({
+            id: "shaonian",
+            title: shaonianTitle,
+            type: types_1.HomeSectionType.singleRowNormal,
+            containsMoreItems: false,
+        });
+        sectionCallback(shaonianSection);
+        const shaonianSectionItems = $(shaonianSectionElement).find('div.manga-cover').toArray();
+        shaonianSection.items = shaonianSectionItems.map((manga) => App.createPartialSourceManga({
+            mangaId: getMangaID($(manga).find('a').attr('href')),
+            image: $(manga).find('mip-img').attr('src'),
+            title: $(manga).find('.manga-title').text(),
+            subtitle: $(manga).find('.manga-chapter').text(),
+        }));
+        sectionCallback(shaonianSection);
+        const shaonvSectionElement = $('div.manga-area').eq(3);
+        const shaonvTitle = $(shaonvSectionElement).find('h3').text();
+        const shaonvSection = App.createHomeSection({
+            id: "shaonv",
+            title: shaonvTitle,
+            type: types_1.HomeSectionType.singleRowNormal,
+            containsMoreItems: false,
+        });
+        sectionCallback(shaonvSection);
+        const shaonvSectionItems = $(shaonvSectionElement).find('div.manga-cover').toArray();
+        shaonvSection.items = shaonvSectionItems.map((manga) => App.createPartialSourceManga({
+            mangaId: getMangaID($(manga).find('a').attr('href')),
+            image: $(manga).find('mip-img').attr('src'),
+            title: $(manga).find('.manga-title').text(),
+            subtitle: $(manga).find('.manga-chapter').text(),
+        }));
+        sectionCallback(shaonvSection);
+        const blSectionElement = $('div.manga-area').eq(4);
+        const blTitle = $(blSectionElement).find('h3').text();
+        const blSection = App.createHomeSection({
+            id: "bl",
+            title: blTitle,
+            type: types_1.HomeSectionType.singleRowNormal,
+            containsMoreItems: false,
+        });
+        sectionCallback(blSection);
+        const blSectionItems = $(blSectionElement).find('div.manga-cover').toArray();
+        blSection.items = blSectionItems.map((manga) => App.createPartialSourceManga({
+            mangaId: getMangaID($(manga).find('a').attr('href')),
+            image: $(manga).find('mip-img').attr('src'),
+            title: $(manga).find('.manga-title').text(),
+            subtitle: $(manga).find('.manga-chapter').text(),
+        }));
+        sectionCallback(blSection);
+        const hotUpdateSectionElement = $('div.manga-area').eq(5);
+        const hotUpdateTitle = $(hotUpdateSectionElement).find('h3').text();
+        const hotUpdateSection = App.createHomeSection({
+            id: "hotUpdate",
+            title: hotUpdateTitle,
+            type: types_1.HomeSectionType.singleRowNormal,
+            containsMoreItems: false,
+        });
+        sectionCallback(hotUpdateSection);
+        const hotUpdateSectionItems = $(hotUpdateSectionElement).find('div.manga-cover').toArray();
+        hotUpdateSection.items = hotUpdateSectionItems.map((manga) => App.createPartialSourceManga({
+            mangaId: getMangaID($(manga).find('a').attr('href')),
+            image: $(manga).find('mip-img').attr('src'),
+            title: $(manga).find('.manga-title').text(),
+            subtitle: $(manga).find('.manga-chapter').text(),
+        }));
+        sectionCallback(hotUpdateSection);
     }
     async getViewMoreItems(homepageSectionId, metadata) {
         throw new Error("Method not implemented.");
     }
     async getMangaDetails(mangaId) {
-        throw new Error("Method not implemented.");
+        const request = App.createRequest({
+            url: `${HAPPYMH_URL}/manga/${mangaId}`,
+            method: "GET",
+        });
+        const response = await this.requestManager.schedule(request, 1);
+        const $ = this.cheerio.load(response.data);
+        const imageLink = $('div.mg-cover > mip-image').attr('src');
+        const description = $('mip-showmore#showmore').text().trim();
+        const status = $('div.ongoing-status').text().trim();
+        const title = $('h2.mg-title').text().trim();
+        const altTitle = $('p.mg-sub-title').eq(-1).text().trim();
+        return App.createSourceManga({
+            id: mangaId,
+            mangaInfo: App.createMangaInfo({
+                image: imageLink,
+                desc: description,
+                status: status,
+                titles: [title, altTitle],
+            }),
+        });
     }
     getMangaShareUrl(mangaId) {
-        throw new Error("Method not implemented.");
+        return `${HAPPYMH_URL}/manga/${mangaId}`;
     }
     async getSearchResults(query, metadata) {
         throw new Error("Method not implemented.");
