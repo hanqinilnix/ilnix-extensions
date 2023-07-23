@@ -328,13 +328,35 @@ export class Happymh implements ChapterProviding, HomePageSectionsProviding, Man
     }
 
     async getSearchResults(query: SearchRequest, metadata: unknown): Promise<PagedResults> {
+        const searchRequestManager: RequestManager = App.createRequestManager({
+            requestsPerSecond: 3,
+            requestTimeout: 15000,
+            interceptor: {
+                interceptRequest: async (request: Request): Promise<Request> => {
+                    request.headers = {
+                        ...(request.headers ?? {}),
+                        ...{
+                            referer: `${HAPPYMH_URL}/sssearch`,
+                            origin: `${HAPPYMH_URL}`,
+                            "user-agent": await this.requestManager.getDefaultUserAgent(),
+                            "X-Requested-With": "XMLHttpRequest",
+                        },
+                    };
+                    return request;
+                },
+                interceptResponse: async (response: Response): Promise<Response> => {
+                    return response;
+                }
+            }
+        });
+        
         const request = App.createRequest({
             url: `${HAPPYMH_URL}/apis/m/ssearch`,
             method: "POST",
-            param: `searchkey=${query.title as string}`
+            data: {'searchkey': query.title as string}
         })
 
-        const response = await this.requestManager.schedule(request, 1);
+        const response = await searchRequestManager.schedule(request, 1);
         throw new Error(`Response: ${response.data as string}`);
         const searchDetails = JSON.parse(response.data as string);
         const searchData = searchDetails["data"];
