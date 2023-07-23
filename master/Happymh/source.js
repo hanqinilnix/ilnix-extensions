@@ -510,7 +510,7 @@ class Happymh {
     }
     async getCloudflareBypassRequestAsync() {
         return App.createRequest({
-            url: `${HAPPYMH_URL}//v2.0/apis/manga/read`,
+            url: `${HAPPYMH_URL}/v2.0/apis/manga/read`,
             method: "GET",
             headers: {
                 referer: `${HAPPYMH_URL}/`,
@@ -560,7 +560,6 @@ class Happymh {
             method: "GET",
         });
         const response = await pageRequestManager.schedule(request, 1);
-        throw new Error(response.data);
         this.CloudFlareError(response.status);
         const chapterDetails = JSON.parse(response.data);
         const chapterData = chapterDetails["data"];
