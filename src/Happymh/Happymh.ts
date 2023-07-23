@@ -85,7 +85,7 @@ export class Happymh implements ChapterProviding, HomePageSectionsProviding, Man
 
     async getChapters(mangaId: string): Promise<Chapter[]> {
         const request = App.createRequest({
-            url: `${mangaId}`,
+            url: `${HAPPYMH_URL}/manga/${mangaId}`,
             method: "GET",
         });
 
@@ -144,6 +144,10 @@ export class Happymh implements ChapterProviding, HomePageSectionsProviding, Man
         this.CloudFlareError(response.status);
         const $ = this.cheerio.load(response.data as string);
 
+        const getMangaID = function (link: string): string {
+            return link.split('/').at(-1) as string;
+        };
+
         const dailySectionElement = $('div.manga-area').eq(0);
         const dailyTitle = $(dailySectionElement).find('h3').text();
         const dailySection = App.createHomeSection({
@@ -156,7 +160,7 @@ export class Happymh implements ChapterProviding, HomePageSectionsProviding, Man
         const dailySectionItems = $(dailySectionElement).find('div.manga-cover').toArray();
         dailySection.items = dailySectionItems.map(
             (manga: CheerioElement): PartialSourceManga => App.createPartialSourceManga({
-                mangaId: $(manga).find('a').attr('href') as string,
+                mangaId: getMangaID($(manga).find('a').attr('href') as string),
                 image: $(manga).find('mip-img').attr('src') as string,
                 title: $(manga).find('.manga-title').text(),
                 subtitle: $(manga).find('.manga-chapter').text(),
@@ -176,7 +180,7 @@ export class Happymh implements ChapterProviding, HomePageSectionsProviding, Man
         const hotSectionItems = $(hotSectionElement).find('div.manga-cover').toArray();
         hotSection.items = hotSectionItems.map(
             (manga: CheerioElement): PartialSourceManga => App.createPartialSourceManga({
-                mangaId: $(manga).find('a').attr('href') as string,
+                mangaId: getMangaID($(manga).find('a').attr('href') as string),
                 image: $(manga).find('mip-img').attr('src') as string,
                 title: $(manga).find('.manga-title').text(),
                 subtitle: $(manga).find('.manga-chapter').text(),
@@ -196,7 +200,7 @@ export class Happymh implements ChapterProviding, HomePageSectionsProviding, Man
         const shaonianSectionItems = $(shaonianSectionElement).find('div.manga-cover').toArray();
         shaonianSection.items = shaonianSectionItems.map(
             (manga: CheerioElement): PartialSourceManga => App.createPartialSourceManga({
-                mangaId: $(manga).find('a').attr('href') as string,
+                mangaId: getMangaID($(manga).find('a').attr('href') as string),
                 image: $(manga).find('mip-img').attr('src') as string,
                 title: $(manga).find('.manga-title').text(),
                 subtitle: $(manga).find('.manga-chapter').text(),
@@ -216,7 +220,7 @@ export class Happymh implements ChapterProviding, HomePageSectionsProviding, Man
         const shaonvSectionItems = $(shaonvSectionElement).find('div.manga-cover').toArray();
         shaonvSection.items = shaonvSectionItems.map(
             (manga: CheerioElement): PartialSourceManga => App.createPartialSourceManga({
-                mangaId: $(manga).find('a').attr('href') as string,
+                mangaId: getMangaID($(manga).find('a').attr('href') as string),
                 image: $(manga).find('mip-img').attr('src') as string,
                 title: $(manga).find('.manga-title').text(),
                 subtitle: $(manga).find('.manga-chapter').text(),
@@ -236,7 +240,7 @@ export class Happymh implements ChapterProviding, HomePageSectionsProviding, Man
         const blSectionItems = $(blSectionElement).find('div.manga-cover').toArray();
         blSection.items = blSectionItems.map(
             (manga: CheerioElement): PartialSourceManga => App.createPartialSourceManga({
-                mangaId: $(manga).find('a').attr('href') as string,
+                mangaId: getMangaID($(manga).find('a').attr('href') as string),
                 image: $(manga).find('mip-img').attr('src') as string,
                 title: $(manga).find('.manga-title').text(),
                 subtitle: $(manga).find('.manga-chapter').text(),
@@ -256,7 +260,7 @@ export class Happymh implements ChapterProviding, HomePageSectionsProviding, Man
         const hotUpdateSectionItems = $(hotUpdateSectionElement).find('div.manga-cover').toArray();
         hotUpdateSection.items = hotUpdateSectionItems.map(
             (manga: CheerioElement): PartialSourceManga => App.createPartialSourceManga({
-                mangaId: $(manga).find('a').attr('href') as string,
+                mangaId: getMangaID($(manga).find('a').attr('href') as string),
                 image: $(manga).find('mip-img').attr('src') as string,
                 title: $(manga).find('.manga-title').text(),
                 subtitle: $(manga).find('.manga-chapter').text(),
@@ -271,7 +275,7 @@ export class Happymh implements ChapterProviding, HomePageSectionsProviding, Man
 
     async getMangaDetails(mangaId: string): Promise<SourceManga> {
         const request = App.createRequest({
-            url: `${mangaId}`,
+            url: `${HAPPYMH_URL}/manga/${mangaId}`,
             method: "GET",
         });
 
@@ -296,7 +300,7 @@ export class Happymh implements ChapterProviding, HomePageSectionsProviding, Man
     }
 
     getMangaShareUrl?(mangaId: string): string {
-        return (`${mangaId}`);
+        return `${HAPPYMH_URL}/manga/${mangaId}`;
     }
 
     async getSearchResults(query: SearchRequest, metadata: unknown): Promise<PagedResults> {
