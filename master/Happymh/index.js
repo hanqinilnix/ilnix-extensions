@@ -679,15 +679,14 @@ class Happymh {
         const description = $('mip-showmore#showmore').text().trim();
         const status = $('div.ongoing-status').text().trim();
         const title = $('h2.mg-title').text().trim();
-        const altTitle = $('p.mg-sub-title').eq(-1).text().trim();
-        throw new Error(`Title: ${title}`);
+        throw new Error(`imageLink: ${imageLink}\nDescription:${description}\nStatus:${status}\nTitle:${title}`);
         return App.createSourceManga({
             id: mangaId,
             mangaInfo: App.createMangaInfo({
                 image: imageLink,
                 desc: description,
                 status: status,
-                titles: [title, altTitle],
+                titles: [title],
             }),
         });
     }
