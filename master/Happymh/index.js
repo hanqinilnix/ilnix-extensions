@@ -524,6 +524,7 @@ class Happymh {
             method: "GET",
         });
         const response = await this.requestManager.schedule(request, 1);
+        this.CloudFlareError(response.status);
         const $ = this.cheerio.load(response.data);
         const mangaDetails = JSON.parse($('mip-data > script').eq(3).text().trim());
         const chapters = mangaDetails['chapterList'].reverse();
@@ -539,6 +540,7 @@ class Happymh {
             method: "GET",
         });
         const response = await this.requestManager.schedule(request, 1);
+        this.CloudFlareError(response.status);
         const chapterDetails = JSON.parse(response.data);
         const chapterData = chapterDetails["data"];
         const chapterPages = chapterData["scans"];
@@ -671,6 +673,7 @@ class Happymh {
             method: "GET",
         });
         const response = await this.requestManager.schedule(request, 1);
+        this.CloudFlareError(response.status);
         const $ = this.cheerio.load(response.data);
         const imageLink = $('div.mg-cover > mip-image').attr('src');
         const description = $('mip-showmore#showmore').text().trim();
