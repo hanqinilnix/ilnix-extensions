@@ -526,7 +526,7 @@ class Happymh {
         const response = await this.requestManager.schedule(request, 1);
         this.CloudFlareError(response.status);
         const $ = this.cheerio.load(response.data);
-        const mangaDetails = $('mip-data > script').html();
+        const mangaDetails = $('mip-data > script').eq(2).html();
         const mangaDetailsLength = $('mip-data > script').length;
         const testDetails = $('div.manga-cover').length;
         throw new Error(`Details: ${mangaDetailsLength} / ${testDetails}\n${mangaDetails}`);
