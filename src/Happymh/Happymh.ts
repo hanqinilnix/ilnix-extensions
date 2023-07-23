@@ -357,7 +357,7 @@ export class Happymh implements ChapterProviding, HomePageSectionsProviding, Man
         })
 
         const response = await searchRequestManager.schedule(request, 1);
-        throw new Error(`Response: ${response.data as string}`);
+        throw new Error(`query: ${query.title}\nResponse: ${response.data as string}`);
         const searchDetails = JSON.parse(response.data as string);
         const searchData = searchDetails["data"];
         const mangaJsonData = searchData["scans"];
