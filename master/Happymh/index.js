@@ -464,7 +464,7 @@ exports.Happymh = exports.HappymhInfo = void 0;
 const types_1 = require("@paperback/types");
 const HAPPYMH_URL = "https://m.happymh.com";
 exports.HappymhInfo = {
-    version: "0.0.9",
+    version: "0.0.10",
     name: "嗨皮漫画",
     icon: "icon.png",
     author: "hanqinilnix",
@@ -535,11 +535,31 @@ class Happymh {
         }));
     }
     async getChapterDetails(mangaId, chapterId) {
+        const pageRequestManager = App.createRequestManager({
+            requestsPerSecond: 3,
+            requestTimeout: 15000,
+            interceptor: {
+                interceptRequest: async (request) => {
+                    request.headers = {
+                        ...(request.headers ?? {}),
+                        ...{
+                            referer: `${HAPPYMH_URL}/reads/${mangaId}/${chapterId}`,
+                            "user-agent": await this.requestManager.getDefaultUserAgent(),
+                            "X-Requested-With": "XMLHttpRequest",
+                        },
+                    };
+                    return request;
+                },
+                interceptResponse: async (response) => {
+                    return response;
+                }
+            }
+        });
         const request = App.createRequest({
             url: `${HAPPYMH_URL}/v2.0/apis/manga/read?code=${mangaId}&cid=${chapterId}`,
             method: "GET",
         });
-        const response = await this.requestManager.schedule(request, 1);
+        const response = await pageRequestManager.schedule(request, 1);
         this.CloudFlareError(response.status);
         const chapterDetails = JSON.parse(response.data);
         const chapterData = chapterDetails["data"];
