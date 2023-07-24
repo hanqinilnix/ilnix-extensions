@@ -354,7 +354,7 @@ export class Happymh implements ChapterProviding, HomePageSectionsProviding, Man
             url: `${HAPPYMH_URL}/apis/m/ssearch`,
             method: "POST",
             param: `searchkey=${query.title}`,
-            data: `searchkey=${query.title}`,
+            data: {'searchkey': query.title},
         })
 
         const response = await searchRequestManager.schedule(request, 1);
