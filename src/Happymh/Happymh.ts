@@ -339,7 +339,8 @@ export class Happymh implements ChapterProviding, HomePageSectionsProviding, Man
                             referer: `${HAPPYMH_URL}/sssearch`,
                             origin: `${HAPPYMH_URL}`,
                             "user-agent": await this.requestManager.getDefaultUserAgent(),
-                            "X-Requested-With": "XMLHttpRequest",
+                            "x-requested-with": "XMLHttpRequest",
+                            'accept': 'application/json, text/plain, */*',
                         },
                     };
                     return request;
@@ -353,7 +354,6 @@ export class Happymh implements ChapterProviding, HomePageSectionsProviding, Man
         const request = App.createRequest({
             url: `${HAPPYMH_URL}/apis/m/ssearch`,
             method: "POST",
-            param: `searchkey=${query.title}`,
             data: {'searchkey': query.title},
         })
 
