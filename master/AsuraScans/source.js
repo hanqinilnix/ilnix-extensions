@@ -1503,7 +1503,7 @@ class AsuraScans {
         const response = await this.requestManager.schedule(request, 2);
         const $ = this.cheerio.load(response.data);
         const images = $('img').toArray()
-            .map((img) => $(img).attr('data-cfsrc'))
+            .map((img) => $(img).attr('src'))
             .slice(1, -8);
         return App.createChapterDetails({
             id: chapterId,
@@ -1529,7 +1529,7 @@ class AsuraScans {
             .map((manga) => App.createPartialSourceManga({
             mangaId: $(manga).find('a').attr('href').trim(),
             title: this.decodeHTMLEntity($(manga).find('.ellipsis').text().trim()),
-            image: $(manga).find('img').attr('data-cfsrc').trim()
+            image: $(manga).find('img').attr('src').trim()
         }));
         sectionCallback(featuredSection);
         // Popular Today
@@ -1544,7 +1544,7 @@ class AsuraScans {
             .map((manga) => App.createPartialSourceManga({
             mangaId: $(manga).find('a').attr('href').trim(),
             title: this.decodeHTMLEntity($(manga).find('a').attr('title').trim()),
-            image: $(manga).find('img').attr('data-cfsrc').trim()
+            image: $(manga).find('img').attr('src').trim()
         }));
         sectionCallback(popularTodaySection);
         // Popular Weekly
@@ -1559,7 +1559,7 @@ class AsuraScans {
             .map((manga) => App.createPartialSourceManga({
             mangaId: $(manga).find('a').attr('href').trim(),
             title: this.decodeHTMLEntity($(manga).find('h2').text().trim()),
-            image: $(manga).find('img').attr('data-cfsrc').trim()
+            image: $(manga).find('img').attr('src').trim()
         }));
         sectionCallback(popWeeklySection);
         // Popular Monthly
@@ -1574,7 +1574,7 @@ class AsuraScans {
             .map((manga) => App.createPartialSourceManga({
             mangaId: $(manga).find('a').attr('href').trim(),
             title: this.decodeHTMLEntity($(manga).find('h2').text().trim()),
-            image: $(manga).find('img').attr('data-cfsrc').trim()
+            image: $(manga).find('img').attr('src').trim()
         }));
         sectionCallback(popMonthlySection);
         // Popular All Time
@@ -1589,7 +1589,7 @@ class AsuraScans {
             .map((manga) => App.createPartialSourceManga({
             mangaId: $(manga).find('a').attr('href').trim(),
             title: this.decodeHTMLEntity($(manga).find('h2').text().trim()),
-            image: $(manga).find('img').attr('data-cfsrc').trim()
+            image: $(manga).find('img').attr('src').trim()
         }));
         sectionCallback(popAllTimeSection);
         // Latest Update
@@ -1604,7 +1604,7 @@ class AsuraScans {
             .map((manga) => App.createPartialSourceManga({
             mangaId: $(manga).find('a').attr('href').trim(),
             title: this.decodeHTMLEntity($(manga).find('a').attr('title').trim()),
-            image: $(manga).find('img').attr('data-cfsrc').trim()
+            image: $(manga).find('img').attr('src').trim()
         }));
         sectionCallback(lastestUpdateSection);
     }
@@ -1621,7 +1621,7 @@ class AsuraScans {
         const titles = [];
         titles.push(this.decodeHTMLEntity($('.entry-title').text()));
         const status = $('.imptdt > i').text();
-        const image = $('.thumb > img').attr('data-cfsrc').trim();
+        const image = $('.thumb > img').attr('src').trim();
         const rating = $('.num').text().trim();
         const details = $('.fmed > span').toArray()
             .map((detail) => $(detail).text().trim());
@@ -1656,7 +1656,7 @@ class AsuraScans {
             .map((result) => App.createPartialSourceManga({
             mangaId: $(result).find('a').attr('href').trim(),
             title: $(result).find('a').attr('title').trim(),
-            image: $(result).find('img').attr('data-cfsrc').trim()
+            image: $(result).find('img').attr('src').trim()
         }));
         return App.createPagedResults({
             results: pageResults,
