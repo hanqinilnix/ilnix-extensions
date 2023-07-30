@@ -1532,7 +1532,7 @@ class AsuraScans {
             image: $(manga).find('img').attr('src').trim()
         }));
         sectionCallback(featuredSection);
-        throw new Error($('.slide-item').eq(1).find('img').attr('src'));
+        throw new Error($('.slide-item').eq(1).find('img').attr('data-lazy-src'));
         // Popular Today
         const popularTodaySection = App.createHomeSection({
             id: 'popular_today',
