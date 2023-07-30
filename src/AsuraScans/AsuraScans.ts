@@ -128,7 +128,7 @@ export class AsuraScans implements ChapterProviding, HomePageSectionsProviding, 
                 image: $(manga).find('img').attr('src')!.trim()
             }));
         sectionCallback(featuredSection);
-        throw new Error($('.slide-item').eq(1).find('img').attr('data-cfsrc') as string);
+        throw new Error(response.data);
 
         // Popular Today
         const popularTodaySection = App.createHomeSection({
