@@ -112,7 +112,6 @@ export class AsuraScans implements ChapterProviding, HomePageSectionsProviding, 
 
         const response = await this.requestManager.schedule(request, 1);
         const $ = this.cheerio.load(response.data as string);
-        throw new Error(response.data);
 
         const featuredSection = App.createHomeSection({
             id: 'featured',
