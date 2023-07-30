@@ -43,8 +43,22 @@ export class AsuraScans implements ChapterProviding, HomePageSectionsProviding, 
     }
 
     readonly requestManager: RequestManager = App.createRequestManager({
-        requestsPerSecond: 3,
-        requestTimeout: 15000,
+        requestsPerSecond: 2,
+        requestTimeout: 10000,
+        interceptor: {
+            interceptRequest: async (request: Request): Promise<Request> => {
+                request.headers = {
+                    ...(request.headers ?? {}),
+                    ...{
+                        "user-agent": await this.requestManager.getDefaultUserAgent(),
+                    },
+                };
+                return request;
+            },
+            interceptResponse: async (response: Response): Promise<Response> => {
+                return response;
+            }
+        }
     });
 
     async getChapters(mangaId: string): Promise<Chapter[]> {
@@ -98,6 +112,7 @@ export class AsuraScans implements ChapterProviding, HomePageSectionsProviding, 
 
         const response = await this.requestManager.schedule(request, 1);
         const $ = this.cheerio.load(response.data as string);
+        throw new Error(response.data);
 
         const featuredSection = App.createHomeSection({
             id: 'featured',
@@ -113,7 +128,6 @@ export class AsuraScans implements ChapterProviding, HomePageSectionsProviding, 
                 image: $(manga).find('img').attr('src')!.trim()
             }));
         sectionCallback(featuredSection);
-        throw new Error(response.data);
 
         // Popular Today
         const popularTodaySection = App.createHomeSection({
