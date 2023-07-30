@@ -1456,21 +1456,6 @@ class AsuraScans {
         this.requestManager = App.createRequestManager({
             requestsPerSecond: 3,
             requestTimeout: 15000,
-            interceptor: {
-                interceptRequest: async (request) => {
-                    request.headers = {
-                        ...(request.headers ?? {}),
-                        ...{
-                            referer: `${ASURA_URL}/`,
-                            "user-agent": await this.requestManager.getDefaultUserAgent(),
-                        },
-                    };
-                    return request;
-                },
-                interceptResponse: async (response) => {
-                    return response;
-                }
-            }
         });
     }
     decodeHTMLEntity(str) {
