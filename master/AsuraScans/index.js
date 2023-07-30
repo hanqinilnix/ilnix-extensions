@@ -1454,8 +1454,22 @@ class AsuraScans {
     constructor(cheerio) {
         this.cheerio = cheerio;
         this.requestManager = App.createRequestManager({
-            requestsPerSecond: 3,
-            requestTimeout: 15000,
+            requestsPerSecond: 2,
+            requestTimeout: 10000,
+            interceptor: {
+                interceptRequest: async (request) => {
+                    request.headers = {
+                        ...(request.headers ?? {}),
+                        ...{
+                            "user-agent": await this.requestManager.getDefaultUserAgent(),
+                        },
+                    };
+                    return request;
+                },
+                interceptResponse: async (response) => {
+                    return response;
+                }
+            }
         });
     }
     decodeHTMLEntity(str) {
@@ -1503,6 +1517,7 @@ class AsuraScans {
         });
         const response = await this.requestManager.schedule(request, 1);
         const $ = this.cheerio.load(response.data);
+        throw new Error(response.data);
         const featuredSection = App.createHomeSection({
             id: 'featured',
             title: 'Featured',
@@ -1517,7 +1532,6 @@ class AsuraScans {
             image: $(manga).find('img').attr('src').trim()
         }));
         sectionCallback(featuredSection);
-        throw new Error(response.data);
         // Popular Today
         const popularTodaySection = App.createHomeSection({
             id: 'popular_today',
