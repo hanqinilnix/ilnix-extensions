@@ -45,21 +45,6 @@ export class AsuraScans implements ChapterProviding, HomePageSectionsProviding, 
     readonly requestManager: RequestManager = App.createRequestManager({
         requestsPerSecond: 3,
         requestTimeout: 15000,
-        interceptor: {
-            interceptRequest: async (request: Request): Promise<Request> => {
-                request.headers = {
-                    ...(request.headers ?? {}),
-                    ...{
-                        referer: `${ASURA_URL}/`,
-                        "user-agent": await this.requestManager.getDefaultUserAgent(),
-                    },
-                };
-                return request;
-            },
-            interceptResponse: async (response: Response): Promise<Response> => {
-                return response;
-            }
-        }
     });
 
     async getChapters(mangaId: string): Promise<Chapter[]> {
