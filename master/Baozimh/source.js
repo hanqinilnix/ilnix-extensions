@@ -462,10 +462,9 @@ __exportStar(require("./compat/DyamicUI"), exports);
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Baozimh = exports.BaozimhInfo = void 0;
 const types_1 = require("@paperback/types");
-// const BAOZIMH_URL = "https://cn.baozimh.com";
-const BAOZIMH_URL = "https://cn.czmanga.com";
+const BAOZIMH_URL = "https://cn.czmanga.com/";
 exports.BaozimhInfo = {
-    version: "2.0.5",
+    version: "2.0.6",
     name: "包子漫画",
     icon: "icon.png",
     author: "hanqinilnix",
@@ -565,7 +564,7 @@ class Baozimh {
         // get the total number of pages of the chapter
         const numOfImages = +$(".comic-text__amp").last().text().trim().split("/")[0];
         // get the first page url as sample for the rest of the chapter page
-        const samplePageUrl = $(".comic-contain__item").first().attr("src")?.trim().split("/");
+        const samplePageUrl = $(".comic-contain__item").first().attr("src")?.trim().replace('baozicdn', 'baozimh').split("/");
         const pages = [];
         for (let i = 1; i <= numOfImages; i++) {
             samplePageUrl?.pop();
