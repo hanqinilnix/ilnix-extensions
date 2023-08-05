@@ -19,11 +19,10 @@ import {
     SourceManga,
 } from "@paperback/types";
 
-// const BAOZIMH_URL = "https://cn.baozimh.com";
-const BAOZIMH_URL = "https://cn.czmanga.com";
+const BAOZIMH_URL = "https://cn.czmanga.com/";
 
 export const BaozimhInfo: SourceInfo = {
-    version: "2.0.5",
+    version: "2.0.6",
     name: "包子漫画",
     icon: "icon.png",
     author: "hanqinilnix",
@@ -138,7 +137,7 @@ export class Baozimh implements ChapterProviding, HomePageSectionsProviding, Man
         const numOfImages: number = +($(".comic-text__amp").last().text().trim().split("/")[0] as string);
 
         // get the first page url as sample for the rest of the chapter page
-        const samplePageUrl = $(".comic-contain__item").first().attr("src")?.trim().split("/");
+        const samplePageUrl = $(".comic-contain__item").first().attr("src")?.trim().replace('baozicdn', 'baozimh').split("/");
 
         const pages = [];
 
