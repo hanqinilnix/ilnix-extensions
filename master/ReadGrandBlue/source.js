@@ -464,7 +464,7 @@ exports.ReadGrandBlue = exports.ReadGrandBlueInfo = void 0;
 const types_1 = require("@paperback/types");
 const GRANDBLUE_URL = "https://grandbluedreaming.online/";
 exports.ReadGrandBlueInfo = {
-    version: "1.0.1",
+    version: "1.0.2",
     name: "ReadGrandBlue",
     icon: "icon.png",
     author: "hanqinilnix",
@@ -561,15 +561,15 @@ class ReadGrandBlue {
         });
         const response = await this.requestManager.schedule(request, 1);
         const $ = this.cheerio.load(response.data);
-        const titles = [];
+        const titles = ["Grand Blue"];
         const status = "Ongoing";
         const image = $('img').attr('src').trim();
-        const description = ($('p').toArray()
+        const description = $('p').toArray()
             .map(list => $(list).html())
             .slice(1, 3)
-            .join('\n'));
+            .join('\n');
         return App.createSourceManga({
-            id: mangaId,
+            id: `${GRANDBLUE_URL}`,
             mangaInfo: App.createMangaInfo({
                 image: image,
                 desc: description,
