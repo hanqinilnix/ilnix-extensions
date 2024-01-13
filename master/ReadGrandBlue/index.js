@@ -464,7 +464,7 @@ exports.ReadGrandBlue = exports.ReadGrandBlueInfo = void 0;
 const types_1 = require("@paperback/types");
 const GRANDBLUE_URL = "https://grandbluedreaming.online/";
 exports.ReadGrandBlueInfo = {
-    version: "1.0.0",
+    version: "1.0.1",
     name: "ReadGrandBlue",
     icon: "icon.png",
     author: "hanqinilnix",
@@ -472,7 +472,7 @@ exports.ReadGrandBlueInfo = {
     contentRating: types_1.ContentRating.EVERYONE,
     websiteBaseURL: GRANDBLUE_URL,
     authorWebsite: "https://github.com/hanqinilnix",
-    intents: types_1.SourceIntents.MANGA_CHAPTERS,
+    intents: types_1.SourceIntents.MANGA_CHAPTERS | types_1.SourceIntents.HOMEPAGE_SECTIONS,
 };
 class ReadGrandBlue {
     constructor(cheerio) {
@@ -541,7 +541,7 @@ class ReadGrandBlue {
             id: 'normal',
             title: '',
             type: types_1.HomeSectionType.singleRowNormal,
-            containsMoreItems: true,
+            containsMoreItems: false,
         });
         sectionCallback(HomepageSection);
         HomepageSection.items = [App.createPartialSourceManga({
