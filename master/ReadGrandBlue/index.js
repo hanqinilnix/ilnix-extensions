@@ -464,7 +464,7 @@ exports.ReadGrandBlue = exports.ReadGrandBlueInfo = void 0;
 const types_1 = require("@paperback/types");
 const GRANDBLUE_URL = "https://grandbluedreaming.online/";
 exports.ReadGrandBlueInfo = {
-    version: "1.0.2",
+    version: "1.0.3",
     name: "ReadGrandBlue",
     icon: "icon.png",
     author: "hanqinilnix",
@@ -509,7 +509,7 @@ class ReadGrandBlue {
             chapters.push(App.createChapter({
                 id: $(chapterHtml[i]).find('a').attr('href').trim(),
                 chapNum: i,
-                name: $(chapterHtml[i]).text().trim(),
+                name: $(chapterHtml[i]).text().slice(10).trim(),
                 langCode: 'en',
             }));
         }
