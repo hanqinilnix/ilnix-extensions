@@ -19,7 +19,7 @@ import {
 const GRANDBLUE_URL = "https://grandbluedreaming.online/";
 
 export const ReadGrandBlueInfo: SourceInfo = {
-    version: "1.0.1",
+    version: "1.0.2",
     name: "ReadGrandBlue",
     icon: "icon.png",
     author: "hanqinilnix",
@@ -131,19 +131,19 @@ export class ReadGrandBlue implements ChapterProviding, MangaProviding, HomePage
         const response = await this.requestManager.schedule(request, 1);
         const $ = this.cheerio.load(response.data as string);
 
-        const titles: string[] = [];
+        const titles: string[] = ["Grand Blue"];
 
         const status = "Ongoing";
 
         const image = $('img').attr('src')!.trim();
 
-        const description = ($('p').toArray()
+        const description = $('p').toArray()
             .map(list => $(list).html())
                 .slice(1, 3)
-                .join('\n'));
+                .join('\n');
 
         return App.createSourceManga({
-            id: mangaId,
+            id: `${GRANDBLUE_URL}`,
             mangaInfo: App.createMangaInfo({
                 image: image,
                 desc: description,
