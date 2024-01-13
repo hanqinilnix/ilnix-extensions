@@ -19,7 +19,7 @@ import {
 const GRANDBLUE_URL = "https://grandbluedreaming.online/";
 
 export const ReadGrandBlueInfo: SourceInfo = {
-    version: "1.0.0",
+    version: "1.0.1",
     name: "ReadGrandBlue",
     icon: "icon.png",
     author: "hanqinilnix",
@@ -27,7 +27,7 @@ export const ReadGrandBlueInfo: SourceInfo = {
     contentRating: ContentRating.EVERYONE,
     websiteBaseURL: GRANDBLUE_URL,
     authorWebsite: "https://github.com/hanqinilnix",
-    intents: SourceIntents.MANGA_CHAPTERS,
+    intents: SourceIntents.MANGA_CHAPTERS | SourceIntents.HOMEPAGE_SECTIONS,
 };
 
 export class ReadGrandBlue implements ChapterProviding, MangaProviding, HomePageSectionsProviding {
@@ -107,7 +107,7 @@ export class ReadGrandBlue implements ChapterProviding, MangaProviding, HomePage
             id: 'normal',
             title: '',
             type: HomeSectionType.singleRowNormal,
-            containsMoreItems: true,
+            containsMoreItems: false,
         });
         sectionCallback(HomepageSection);
         HomepageSection.items = [App.createPartialSourceManga({
