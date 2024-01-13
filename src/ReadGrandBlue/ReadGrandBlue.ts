@@ -19,7 +19,7 @@ import {
 const GRANDBLUE_URL = "https://grandbluedreaming.online/";
 
 export const ReadGrandBlueInfo: SourceInfo = {
-    version: "1.0.2",
+    version: "1.0.3",
     name: "ReadGrandBlue",
     icon: "icon.png",
     author: "hanqinilnix",
@@ -67,7 +67,7 @@ export class ReadGrandBlue implements ChapterProviding, MangaProviding, HomePage
             chapters.push(App.createChapter({
                 id: $(chapterHtml[i]).find('a').attr('href')!.trim(),
                 chapNum: i,
-                name: $(chapterHtml[i]).text().trim(),
+                name: $(chapterHtml[i]).text().slice(10, ).trim(),
                 langCode: 'en',
             }))
         }
