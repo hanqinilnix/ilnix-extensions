@@ -21,8 +21,8 @@ import {
 
 const COLAMANGA_URL = "https://colamanga.com/";
 
-export const BaozimhInfo: SourceInfo = {
-    version: "0.0.1",
+export const ColamangaInfo: SourceInfo = {
+    version: "0.0.2",
     name: "漫画",
     icon: "icon.png",
     author: "hanqinilnix",
@@ -30,7 +30,7 @@ export const BaozimhInfo: SourceInfo = {
     contentRating: ContentRating.EVERYONE,
     websiteBaseURL: COLAMANGA_URL,
     authorWebsite: "https://github.com/hanqinilnix",
-    intents: SourceIntents.MANGA_CHAPTERS | SourceIntents.HOMEPAGE_SECTIONS,
+    intents: SourceIntents.MANGA_CHAPTERS | SourceIntents.HOMEPAGE_SECTIONS | SourceIntents.CLOUDFLARE_BYPASS_REQUIRED,
 };
 
 export class Colamanga implements ChapterProviding, HomePageSectionsProviding, MangaProviding, SearchResultsProviding {
