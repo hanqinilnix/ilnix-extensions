@@ -460,11 +460,11 @@ __exportStar(require("./compat/DyamicUI"), exports);
 },{"./base/index":7,"./compat/DyamicUI":16,"./generated/_exports":60}],62:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Colamanga = exports.BaozimhInfo = void 0;
+exports.Colamanga = exports.ColamangaInfo = void 0;
 const types_1 = require("@paperback/types");
 const COLAMANGA_URL = "https://colamanga.com/";
-exports.BaozimhInfo = {
-    version: "0.0.1",
+exports.ColamangaInfo = {
+    version: "0.0.2",
     name: "漫画",
     icon: "icon.png",
     author: "hanqinilnix",
@@ -472,7 +472,7 @@ exports.BaozimhInfo = {
     contentRating: types_1.ContentRating.EVERYONE,
     websiteBaseURL: COLAMANGA_URL,
     authorWebsite: "https://github.com/hanqinilnix",
-    intents: types_1.SourceIntents.MANGA_CHAPTERS | types_1.SourceIntents.HOMEPAGE_SECTIONS,
+    intents: types_1.SourceIntents.MANGA_CHAPTERS | types_1.SourceIntents.HOMEPAGE_SECTIONS | types_1.SourceIntents.CLOUDFLARE_BYPASS_REQUIRED,
 };
 class Colamanga {
     constructor(cheerio) {
