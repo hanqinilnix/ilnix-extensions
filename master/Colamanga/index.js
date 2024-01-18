@@ -464,7 +464,7 @@ exports.Colamanga = exports.ColamangaInfo = void 0;
 const types_1 = require("@paperback/types");
 const COLAMANGA_URL = "https://colamanga.com/";
 exports.ColamangaInfo = {
-    version: "0.0.2",
+    version: "0.0.3",
     name: "漫画",
     icon: "icon.png",
     author: "hanqinilnix",
@@ -472,6 +472,12 @@ exports.ColamangaInfo = {
     contentRating: types_1.ContentRating.EVERYONE,
     websiteBaseURL: COLAMANGA_URL,
     authorWebsite: "https://github.com/hanqinilnix",
+    sourceTags: [
+        {
+            text: "Cloudflare",
+            type: types_1.BadgeColor.RED,
+        },
+    ],
     intents: types_1.SourceIntents.MANGA_CHAPTERS | types_1.SourceIntents.HOMEPAGE_SECTIONS | types_1.SourceIntents.CLOUDFLARE_BYPASS_REQUIRED,
 };
 class Colamanga {
@@ -596,7 +602,8 @@ class Colamanga {
     }
     async getHomePageSections(sectionCallback) {
         const request = App.createRequest({
-            url: `${COLAMANGA_URL}`,
+            // url: `${COLAMANGA_URL}`,
+            url: 'https://www.colamanga.com/manga-ly91263/1/3673.html',
             method: "GET",
         });
         const response = await this.requestManager.schedule(request, 1);
