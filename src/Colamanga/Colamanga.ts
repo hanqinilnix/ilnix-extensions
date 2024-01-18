@@ -1,4 +1,5 @@
 import {
+    BadgeColor,
     Chapter,
     ChapterDetails,
     ChapterProviding,
@@ -22,7 +23,7 @@ import {
 const COLAMANGA_URL = "https://colamanga.com/";
 
 export const ColamangaInfo: SourceInfo = {
-    version: "0.0.2",
+    version: "0.0.3",
     name: "漫画",
     icon: "icon.png",
     author: "hanqinilnix",
@@ -30,6 +31,12 @@ export const ColamangaInfo: SourceInfo = {
     contentRating: ContentRating.EVERYONE,
     websiteBaseURL: COLAMANGA_URL,
     authorWebsite: "https://github.com/hanqinilnix",
+    sourceTags: [
+        {
+            text: "Cloudflare",
+            type: BadgeColor.RED,
+        },
+    ],
     intents: SourceIntents.MANGA_CHAPTERS | SourceIntents.HOMEPAGE_SECTIONS | SourceIntents.CLOUDFLARE_BYPASS_REQUIRED,
 };
 
