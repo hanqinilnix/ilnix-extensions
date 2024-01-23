@@ -462,9 +462,9 @@ __exportStar(require("./compat/DyamicUI"), exports);
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Baozimh = exports.BaozimhInfo = void 0;
 const types_1 = require("@paperback/types");
-const BAOZIMH_URL = "https://cn.czmanga.com/";
+const BAOZIMH_URL = "https://cn.fzmanga.com/";
 exports.BaozimhInfo = {
-    version: "2.0.6",
+    version: "2.0.7",
     name: "包子漫画",
     icon: "icon.png",
     author: "hanqinilnix",
