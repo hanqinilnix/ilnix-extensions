@@ -22,7 +22,7 @@ import {
 const BAOZIMH_URL = "https://cn.czmanga.com/";
 
 export const BaozimhInfo: SourceInfo = {
-    version: "2.0.6",
+    version: "2.0.7",
     name: "包子漫画",
     icon: "icon.png",
     author: "hanqinilnix",
@@ -134,7 +134,7 @@ export class Baozimh implements ChapterProviding, HomePageSectionsProviding, Man
         }
 
         // get the total number of pages of the chapter
-        const numOfImages: number = +($(".comic-text__amp").last().text().trim().split("/")[0] as string);
+        const numOfImages: number = +($(".comic-text__amp").last().text().trim().split(" ")[0]?.trim() as string);
 
         // get the first page url as sample for the rest of the chapter page
         const samplePageUrl = $(".comic-contain__item").first().attr("src")?.trim().replace('baozicdn', 'baozimh').split("/");
