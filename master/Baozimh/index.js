@@ -562,7 +562,7 @@ class Baozimh {
                 .filter((text) => text == "点击进入下一页" || text == "點擊進入下一頁");
         }
         // get the total number of pages of the chapter
-        const numOfImages = +$(".comic-text__amp").last().text().trim().split("/")[0];
+        const numOfImages = +$(".comic-text__amp").last().text().trim().split(" ")[0]?.trim();
         // get the first page url as sample for the rest of the chapter page
         const samplePageUrl = $(".comic-contain__item").first().attr("src")?.trim().replace('baozicdn', 'baozimh').split("/");
         const pages = [];
