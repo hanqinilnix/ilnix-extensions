@@ -23,7 +23,7 @@ import {
 const HAPPYMH_URL = "https://m.happymh.com";
 
 export const HappymhInfo: SourceInfo = {
-    version: "0.0.12",
+    version: "0.1.0",
     name: "嗨皮漫画",
     icon: "icon.png",
     author: "hanqinilnix",
@@ -74,7 +74,7 @@ export class Happymh implements ChapterProviding, HomePageSectionsProviding, Man
 
     async getCloudflareBypassRequestAsync(): Promise<Request> {
         return App.createRequest({
-            url: `${HAPPYMH_URL}/v2.0/apis/manga/read`,
+            url: `https://m.happymh.com/reads/Upgradealone/3940403`,
             method: "GET",
             headers: {
                 referer: `${HAPPYMH_URL}/`,
