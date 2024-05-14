@@ -30,7 +30,7 @@ export const ColaMangaInfo: SourceInfo = {
     contentRating: ContentRating.EVERYONE,
     websiteBaseURL: COLAMANGA_URL,
     authorWebsite: "https://github.com/hanqinilnix",
-    intents: SourceIntents.MANGA_CHAPTERS | SourceIntents.HOMEPAGE_SECTIONS,
+    intents: SourceIntents.MANGA_CHAPTERS | SourceIntents.HOMEPAGE_SECTIONS | SourceIntents.CLOUDFLARE_BYPASS_REQUIRED,
 };
 
 export class ColaManga implements ChapterProviding, HomePageSectionsProviding, MangaProviding, SearchResultsProviding {
