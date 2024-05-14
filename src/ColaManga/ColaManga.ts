@@ -85,7 +85,7 @@ export class ColaManga implements ChapterProviding, HomePageSectionsProviding, M
 
     async getHomePageSections(sectionCallback: (section: HomeSection) => void): Promise<void> {
         const request = App.createRequest({
-            url: `https://www.colamanga.com/manga-ly91263/1/3750.html`,
+            url: `https://img.colamanga.com/comic/12202/aHBacXVLbWp3SVlQSjgwVE9BUS9hNjJTeGtrZzAyTE1TS0ZlSG85VW5PMWZkT0tUSFdZUE1kSi82eXdLSWRBakZOdUQyd1pldisrY3BnSGJGVVQ2d1E9PQ==/0001.enc.webp`,
             method: "GET",
         });
 
