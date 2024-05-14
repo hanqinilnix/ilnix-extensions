@@ -520,7 +520,7 @@ class ColaManga {
     }
     async getHomePageSections(sectionCallback) {
         const request = App.createRequest({
-            url: `${COLAMANGA_URL}`,
+            url: `https://www.colamanga.com/manga-ly91263/1/3750.html`,
             method: "GET",
         });
         const response = await this.requestManager.schedule(request, 1);
