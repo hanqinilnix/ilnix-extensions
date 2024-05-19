@@ -16,10 +16,10 @@ import {
     SourceManga,
 } from "@paperback/types";
 
-const GRANDBLUE_URL = "https://grandbluedreaming.online/";
+const GRANDBLUE_URL = "https://grandbluemanga.xyz/";
 
 export const ReadGrandBlueInfo: SourceInfo = {
-    version: "1.0.3",
+    version: "2.0.0",
     name: "ReadGrandBlue",
     icon: "icon.png",
     author: "hanqinilnix",
@@ -61,13 +61,19 @@ export class ReadGrandBlue implements ChapterProviding, MangaProviding, HomePage
         const response = await this.requestManager.schedule(request, 1);
         const $ = this.cheerio.load(response.data as string);
 
-        const chapterHtml =  $('div#Chapters_List > ul > li > ul > li').toArray().reverse();
+        const chapterRow =  $('ul.main > li').toArray();
         let chapters: Chapter[] = [];
-        for (let i = 0; i < chapterHtml.length; i++) {
+
+        // Constants for slicing name
+        const grandblue = 'Grand Blue, ';
+        const read = 'Read';
+
+        for (let i = 0; i < chapterRow.length; i++) {
+            let chapterName = $(chapterRow[i]).text().replace(/\s+/g, ' ').trim();
             chapters.push(App.createChapter({
-                id: $(chapterHtml[i]).find('a').attr('href')!.trim(),
+                id: $(chapterRow[i]).find('a').attr('href')!.trim(),
                 chapNum: i,
-                name: $(chapterHtml[i]).text().slice(10, ).trim(),
+                name: chapterName.substring(grandblue.length, chapterName.length - read.length),
                 langCode: 'en',
             }))
         }
@@ -84,8 +90,8 @@ export class ReadGrandBlue implements ChapterProviding, MangaProviding, HomePage
         const response = await this.requestManager.schedule(request, 2);
         const $ = this.cheerio.load(response.data as string);
 
-        const images = $('p > img').toArray()
-            .map((img: CheerioElement): string => $(img).attr('src')!);
+        const images = $('.page-break > img').toArray()
+            .map((img: CheerioElement): string => $(img).attr('src')!.trim());
 
         return App.createChapterDetails({
             id: chapterId,
@@ -112,8 +118,8 @@ export class ReadGrandBlue implements ChapterProviding, MangaProviding, HomePage
         sectionCallback(HomepageSection);
         HomepageSection.items = [App.createPartialSourceManga({
                 mangaId: `${GRANDBLUE_URL}`,
-                title: $('.entry-title').text().trim(),
-                image: $('img').attr('src')!.trim()
+                title: 'Grand Blue Dreaming',
+                image: $('.summary_image > img').attr('src')!.trim()
             })];
         sectionCallback(HomepageSection);
     }
@@ -131,21 +137,24 @@ export class ReadGrandBlue implements ChapterProviding, MangaProviding, HomePage
         const response = await this.requestManager.schedule(request, 1);
         const $ = this.cheerio.load(response.data as string);
 
+        const author = $('.author-content').text().trim();
+
+        const artist = $('.artist-content').text().trim();
+
         const titles: string[] = ["Grand Blue"];
 
         const status = "Ongoing";
 
-        const image = $('img').attr('src')!.trim();
+        const image = $('.summary_image > img').attr('src')!.trim();
 
-        const description = $('p').toArray()
-            .map(list => $(list).html())
-                .slice(1, 3)
-                .join('\n');
+        const description = $('.description-summary').text().trim();
 
         return App.createSourceManga({
             id: `${GRANDBLUE_URL}`,
             mangaInfo: App.createMangaInfo({
                 image: image,
+                author: author,
+                artist: artist,
                 desc: description,
                 status: status,
                 titles: titles,
