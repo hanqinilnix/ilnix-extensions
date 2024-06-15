@@ -21,10 +21,10 @@ import {
 
 import entities = require('entities');
 
-const ASURA_URL = "https://asura.gg/";
+const ASURA_URL = "https://asuracomic.net/";
 
 export const AsuraScansInfo: SourceInfo = {
-    version: "2.0.2",
+    version: "4.0.0",
     name: "AsuraScans",
     icon: "icon.png",
     author: "hanqinilnix",
