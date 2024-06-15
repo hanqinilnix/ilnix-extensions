@@ -44,7 +44,7 @@ export class AsuraScans implements ChapterProviding, HomePageSectionsProviding, 
 
     readonly requestManager: RequestManager = App.createRequestManager({
         requestsPerSecond: 2,
-        requestTimeout: 10000,
+        requestTimeout: 100000,
         interceptor: {
             interceptRequest: async (request: Request): Promise<Request> => {
                 request.headers = {
