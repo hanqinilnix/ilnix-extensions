@@ -1103,6 +1103,15 @@ class AsuraScans {
     decodeHTMLEntity(str) {
         return entities.decodeHTML(str);
     }
+    async getCloudflareBypassRequestAsync() {
+        return App.createRequest({
+            url: `${ASURA_URL}`,
+            method: "GET",
+            headers: {
+                "user-agent": await this.requestManager.getDefaultUserAgent(),
+            },
+        });
+    }
     async getChapters(mangaId) {
         const request = App.createRequest({
             url: `${mangaId}`,
