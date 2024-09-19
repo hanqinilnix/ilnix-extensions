@@ -32,7 +32,7 @@ export const AsuraScansInfo: SourceInfo = {
     contentRating: ContentRating.EVERYONE,
     websiteBaseURL: ASURA_URL,
     authorWebsite: "https://github.com/hanqinilnix",
-    intents: SourceIntents.MANGA_CHAPTERS | SourceIntents.HOMEPAGE_SECTIONS,
+    intents: SourceIntents.MANGA_CHAPTERS | SourceIntents.HOMEPAGE_SECTIONS | SourceIntents.CLOUDFLARE_BYPASS_REQUIRED,
 };
 
 export class AsuraScans implements ChapterProviding, HomePageSectionsProviding, MangaProviding, SearchResultsProviding {
