@@ -61,6 +61,16 @@ export class AsuraScans implements ChapterProviding, HomePageSectionsProviding, 
         }
     });
 
+    async getCloudflareBypassRequestAsync(): Promise<Request> {
+        return App.createRequest({
+            url: `${ASURA_URL}`,
+            method: "GET",
+            headers: {
+                "user-agent": await this.requestManager.getDefaultUserAgent(),
+            },
+        });
+    }
+
     async getChapters(mangaId: string): Promise<Chapter[]> {
         const request = App.createRequest({
             url: `${mangaId}`,
