@@ -1076,7 +1076,7 @@ exports.AsuraScansInfo = {
     contentRating: types_1.ContentRating.EVERYONE,
     websiteBaseURL: ASURA_URL,
     authorWebsite: "https://github.com/hanqinilnix",
-    intents: types_1.SourceIntents.MANGA_CHAPTERS | types_1.SourceIntents.HOMEPAGE_SECTIONS,
+    intents: types_1.SourceIntents.MANGA_CHAPTERS | types_1.SourceIntents.HOMEPAGE_SECTIONS | types_1.SourceIntents.CLOUDFLARE_BYPASS_REQUIRED,
 };
 class AsuraScans {
     constructor(cheerio) {
