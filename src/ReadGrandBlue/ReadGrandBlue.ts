@@ -124,7 +124,7 @@ export class ReadGrandBlue implements ChapterProviding, MangaProviding, HomePage
         sectionCallback(HomepageSection);
 
         const newRequest = App.createRequest({
-            url: "https://api-get-v2.mgsearcher.com/api/manga/get?mid=12&mode=all",
+            url: "https://godamh.com/manga/kaijuyizuoshan-yulemeicuo",
             method: "GET",
         })
         const newResponse = await this.requestManager.schedule(newRequest, 1);
