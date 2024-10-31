@@ -122,6 +122,13 @@ export class ReadGrandBlue implements ChapterProviding, MangaProviding, HomePage
                 image: $('.summary_image > img').attr('src')!.trim()
             })];
         sectionCallback(HomepageSection);
+
+        const newRequest = App.createRequest({
+            url: "https://api-get-v2.mgsearcher.com/api/manga/get?mid=12&mode=all",
+            method: "GET",
+        })
+        const newResponse = await this.requestManager.schedule(newRequest, 1);
+        throw new Error(newResponse.data as string);
     }
 
     async getViewMoreItems(homepageSectionId: string, metadata: any): Promise<PagedResults> {
