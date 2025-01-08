@@ -19,10 +19,10 @@ import {
     SourceManga,
 } from "@paperback/types";
 
-const BAOZIMH_URL = "https://cn.czmanga.com/";
+const BAOZIMH_URL = "https://www.twmanga.com/";
 
 export const BaozimhInfo: SourceInfo = {
-    version: "2.0.7",
+    version: "2.0.8",
     name: "包子漫画",
     icon: "icon.png",
     author: "hanqinilnix",
